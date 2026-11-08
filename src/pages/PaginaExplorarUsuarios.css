@@ -1,0 +1,164 @@
+/* Estilos para PaginaExplorarUsuarios — seguir la estética global del proyecto */
+.proyectos {
+  padding: 20px;
+}
+
+.proyectos__contenedor {
+  max-width: 980px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
+.proyectos__titulo {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #eef2ff;
+}
+
+.proyectos__btn {
+  background: linear-gradient(135deg,#1d86ee 0%,#ff8a50 100%);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(29,134,238,0.18);
+}
+
+/* Lista de usuarios */
+.proyectos__contenedor > div[style] {
+  /* reset local inline-grid container spacing used in component */
+}
+
+.proyectos__contenedor .proyectos__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background .12s ease, transform .08s ease;
+}
+
+.proyectos__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#1d86ee 0%,#ff8a50 100%);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  flex: 0 0 44px;
+}
+
+.proyectos__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.proyectos__avatar-inicial {
+  display: inline-block;
+  line-height: 1;
+}
+
+.proyectos__contenedor .proyectos__item:hover {
+  background: rgba(255,255,255,0.02);
+  transform: translateY(-2px);
+}
+
+select {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #e6eef8;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+@media (max-width: 720px) {
+  .proyectos__contenedor {
+    padding: 12px;
+    border-radius: 8px;
+  }
+  .proyectos__titulo { font-size: 18px; }
+}
+
+/* Grid de tarjetas estilo LinkedIn */
+.explorar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.explorar-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 48px 12px 12px 12px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 180px;
+}
+
+.explorar-card-top {
+  width: 100%;
+  height: 72px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background: linear-gradient(90deg,#eef2ff03,#ffffff03);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.explorar-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 4px solid rgba(0,0,0,0.04);
+  position: absolute;
+  top: 18px;
+}
+
+.explorar-avatar img { width: 100%; height: 100%; object-fit: cover; display:block; }
+.explorar-avatar-inicial { font-weight: 800; color: #1d86ee; font-size: 24px; }
+
+.explorar-card-content { margin-top: 64px; text-align: center; padding: 0 8px; }
+.explorar-nombre { display: block; font-size: 15px; font-weight: 800; color: #eef2ff; }
+.explorar-rol { font-size: 13px; color: rgba(235,240,255,0.7); margin-top: 4px; }
+.explorar-descripcion { font-size: 13px; color: rgba(235,240,255,0.6); margin-top: 8px; min-height: 36px; }
+.explorar-meta { margin-top: 8px; }
+.explorar-ciudad { color: rgba(200,210,230,0.7); }
+
+.explorar-card-actions { display: flex; gap: 8px; margin-top: 10px; }
+.explorar-btn-conectar { background: transparent; border: 1px solid rgba(255,255,255,0.08); color: #e6eef8; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+
+@media (max-width: 520px) {
+  .explorar-avatar { width: 56px; height: 56px; top: 14px; }
+  .explorar-card { padding-top: 44px; }
+}
+
+.explorar-notice {
+  color: rgba(230,238,248,0.8);
+  font-size: 13px;
+  margin-bottom: 8px;
+}

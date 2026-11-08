@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-labelledby="ateneaLogoTitle">
+  <title id="ateneaLogoTitle">AMBRIOSA logo</title>
+  <rect width="260" height="260" rx="40" fill="#000000" />
+  <image href="./image.png" x="0" y="0" width="260" height="260" preserveAspectRatio="xMidYMid slice" />
+</svg>

@@ -1,0 +1,559 @@
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR OLYMPO — v2.0 RESPONSIVE
+   Coherente con dashboard-olympo.css
+═══════════════════════════════════════════════════════════ */
+
+/* ── Contenedor principal ── */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+
+  /* Fondo glassmorphism oscuro */
+  background: rgba(8, 15, 36, 0.92);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.40);
+
+  /* Línea de acento izquierda */
+  position: relative;
+  overflow: hidden;
+  transition: width 240ms ease, transform 300ms ease;
+  z-index: 100;
+}
+
+.sidebar--colapsado {
+  width: 72px;
+}
+
+/* Resplandor sutil en esquina superior */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(29, 134, 238, 0.12), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sidebar > * { position: relative; z-index: 1; }
+
+
+/* ── Logo ── */
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.sidebar__toggle {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(29, 134, 238, 0.18);
+  border-radius: 10px;
+  color: rgba(200, 215, 255, 0.72);
+  background: rgba(29, 134, 238, 0.08);
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.sidebar__toggle:hover {
+  color: #eef2ff;
+  background: rgba(29, 134, 238, 0.16);
+  border-color: rgba(29, 134, 238, 0.36);
+}
+
+.sidebar__logo-imagen {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(29, 134, 238, 0.10);
+  border: 1px solid rgba(29, 134, 238, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(29, 134, 238, 0.18);
+}
+
+.sidebar__logo-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.sidebar__logo-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sidebar__logo-nombre {
+  font-family: var(--fuente-titulo);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+  white-space: nowrap;
+  /* Degradado Ambrosia (igual al login) */
+  color: #eef2ff; /* fallback */
+  background: linear-gradient(120deg, #1d86ee, #ff6b35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar__logo-subtitulo {
+  color: rgba(200, 215, 255, 0.42);
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ── Nav ── */
+.sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar__nav::-webkit-scrollbar { display: none; }
+
+
+/* ── Label de sección ── */
+.sidebar__seccion-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 107, 53, 0.55);
+  padding: 0 10px;
+  margin: 6px 0 4px;
+  user-select: none;
+}
+
+
+/* ── Lista ── */
+.sidebar__lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+/* ── Separador ── */
+.sidebar__separador {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.07),
+    transparent
+  );
+  margin: 10px 4px;
+  flex-shrink: 0;
+}
+
+/* Empuja el grupo inferior hacia abajo */
+.sidebar__separador--push {
+  flex: 1;
+  height: auto;
+  background: none;
+  margin: 0;
+  min-height: 16px;
+}
+
+
+/* ── Item de menú ── */
+.sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(200, 215, 255, 0.52);
+  font-size: 13.5px;
+  font-weight: 500;
+  position: relative;
+  transition:
+    background  200ms ease,
+    color       200ms ease,
+    transform   200ms ease;
+  user-select: none;
+}
+
+.sidebar__item:hover {
+  background: rgba(29, 134, 238, 0.09);
+  color: rgba(200, 215, 255, 0.88);
+  transform: translateX(2px);
+}
+
+/* Estado activo */
+.sidebar__item--activo {
+  background: linear-gradient(
+    135deg,
+    rgba(29, 134, 238, 0.22) 0%,
+    rgba(29, 134, 238, 0.10) 100%
+  );
+  color: #eef2ff !important;
+  font-weight: 700;
+  border: 1px solid rgba(29, 134, 238, 0.22);
+}
+
+.sidebar__item--activo:hover {
+  transform: none;
+  background: linear-gradient(
+    135deg,
+    rgba(29, 134, 238, 0.28) 0%,
+    rgba(29, 134, 238, 0.14) 100%
+  );
+}
+
+/* Pip indicador derecho del item activo */
+.sidebar__item-pip {
+  position: absolute;
+  right: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ff6b35;
+  box-shadow: 0 0 8px rgba(255, 107, 53, 0.8);
+}
+
+/* Badge contador de mensajes no leídos */
+.sidebar__badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff4757 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+  margin-left: 8px;
+  animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4); }
+  50% { box-shadow: 0 2px 16px rgba(255, 107, 53, 0.7); }
+}
+
+/* Item peligroso (cerrar sesión) */
+.sidebar__item--danger {
+  color: rgba(255, 100, 100, 0.52);
+}
+
+.sidebar__item--danger:hover {
+  background: rgba(255, 80, 80, 0.08);
+  color: #ff8080;
+  border-color: transparent;
+}
+
+
+/* ── Ícono ── */
+.sidebar__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+
+/* ── Etiqueta ── */
+.sidebar__etiqueta {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+
+.sidebar--colapsado .sidebar__logo {
+  justify-content: center;
+  padding: 18px 10px;
+}
+
+.sidebar--colapsado .sidebar__logo-texto,
+.sidebar--colapsado .sidebar__etiqueta,
+.sidebar--colapsado .sidebar__seccion-label,
+.sidebar--colapsado .sidebar__item-pip {
+  display: none;
+}
+
+.sidebar--colapsado .sidebar__toggle {
+  position: absolute;
+  right: 6px;
+  bottom: -16px;
+  width: 28px;
+  height: 28px;
+}
+
+.sidebar--colapsado .sidebar__logo-imagen {
+  width: 38px;
+  height: 38px;
+}
+
+.sidebar--colapsado .sidebar__item {
+  justify-content: center;
+  padding: 11px;
+}
+
+.sidebar--colapsado .sidebar__item:hover {
+  transform: none;
+}
+
+.sidebar--colapsado .sidebar__icono {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ─────────────────────────────────────────────────
+   MEDIA QUERIES — RESPONSIVE DESIGN
+───────────────────────────────────────────────── */
+
+/* Tablet (1024px) */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 64px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 100;
+  }
+
+  .sidebar__toggle {
+    display: none;
+  }
+
+  .sidebar__logo-texto,
+  .sidebar__etiqueta,
+  .sidebar__seccion-label,
+  .sidebar__item-pip {
+    display: none;
+  }
+
+  .sidebar__logo {
+    justify-content: center;
+    padding: 18px 10px;
+  }
+
+  .sidebar__logo-imagen {
+    width: 38px;
+    height: 38px;
+  }
+
+  .sidebar__item {
+    justify-content: center;
+    padding: 11px;
+    border-radius: 10px;
+  }
+
+  .sidebar__item:hover {
+    transform: none;
+  }
+
+  .sidebar__icono {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Dispositivo móvil/tablet (768px) - Drawer Modal */
+@media (max-width: 768px) {
+  .sidebar {
+    width: min(280px, 86vw);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    transform: translateX(-100%);
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+
+  .sidebar--colapsado {
+    width: min(280px, 86vw);
+  }
+
+  /* Mostrar sidebar cuando está abierto */
+  .layout {
+    display: flex;
+  }
+
+  .sidebar--abierto {
+    transform: translateX(0);
+  }
+
+  .sidebar__logo-texto,
+  .sidebar__etiqueta,
+  .sidebar__item-pip {
+    display: flex;
+  }
+
+  .sidebar__seccion-label {
+    display: block;
+  }
+
+  .sidebar__toggle {
+    display: none;
+  }
+
+  .sidebar__logo {
+    padding: 22px 20px 18px;
+  }
+
+  .sidebar__logo-imagen {
+    width: 44px;
+    height: 44px;
+  }
+
+  .sidebar__item {
+    justify-content: flex-start;
+    padding: 10px 12px;
+  }
+
+  .sidebar__item:hover {
+    transform: translateX(2px);
+  }
+
+  .sidebar__icono {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Pantalla pequeña (480px) */
+@media (max-width: 480px) {
+  .sidebar {
+    width: min(280px, 88vw);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    transform: translateX(-100%);
+    z-index: 100;
+  }
+
+  .sidebar--abierto {
+    transform: translateX(0);
+  }
+
+  .sidebar__logo {
+    padding: 18px 18px;
+  }
+
+  .sidebar__logo-imagen {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sidebar__logo-nombre {
+    font-size: 12px;
+  }
+
+  .sidebar__logo-subtitulo {
+    font-size: 7.5px;
+  }
+
+  .sidebar__item {
+    padding: 9px 10px;
+    font-size: 12.5px;
+  }
+
+  .sidebar__icono {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Blindaje del layout: algunas paginas importan estilos globales ".sidebar".
+   Estas reglas mantienen el comportamiento real del componente. */
+.layout > .sidebar {
+  flex: 0 0 auto !important;
+  overflow-x: hidden !important;
+}
+
+@media (min-width: 1025px) {
+  .layout > .sidebar {
+    position: relative !important;
+    transform: none !important;
+    width: 240px !important;
+  }
+
+  .layout > .sidebar.sidebar--colapsado {
+    width: 72px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .layout > .sidebar {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    width: 64px !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    transform: none !important;
+    z-index: 100 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout > .sidebar {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    width: min(280px, 86vw) !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    transform: translateX(-100%) !important;
+    z-index: 100 !important;
+  }
+
+  .layout > .sidebar.sidebar--abierto {
+    transform: translateX(0) !important;
+  }
+}

@@ -1,0 +1,609 @@
+.callcenter {
+  min-height: 100%;
+  flex: 1;
+  padding: 32px;
+  color: #eef2ff;
+  background:
+    radial-gradient(ellipse 48% 36% at 10% 5%, rgba(29, 134, 238, 0.18), transparent),
+    radial-gradient(ellipse 42% 42% at 92% 90%, rgba(255, 107, 53, 0.14), transparent),
+    linear-gradient(160deg, #050c1d 0%, #0c1838 55%, #080e22 100%);
+}
+
+.callcenter__contenedor {
+  max-width: 1180px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.callcenter__hero,
+.callcenter__panel,
+.callcenter__canal,
+.callcenter__faq {
+  background: rgba(15, 26, 56, 0.72);
+  border: 1px solid rgba(29, 134, 238, 0.15);
+  border-radius: var(--radio-card);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px);
+}
+
+.callcenter__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px;
+}
+
+.callcenter__eyebrow {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: #70b8ff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.callcenter__hero h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.callcenter__hero p,
+.callcenter__panel-header p,
+.callcenter__canal p,
+.callcenter__usuario span,
+.callcenter__campo span,
+.callcenter__check,
+.callcenter__ticket-fila span,
+.callcenter__faq-header p,
+.callcenter__faq-item p {
+  color: rgba(200, 215, 255, 0.62);
+}
+
+.callcenter__hero p {
+  max-width: 690px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.callcenter__estado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  background: rgba(52, 211, 153, 0.08);
+}
+
+.callcenter__estado-icono,
+.callcenter__fila-icono {
+  color: #6ee7b7;
+}
+
+.callcenter__estado span,
+.callcenter__estado strong {
+  display: block;
+}
+
+.callcenter__estado span {
+  color: #6ee7b7;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.callcenter__estado strong {
+  margin-top: 2px;
+  color: #eef2ff;
+  font-size: 13px;
+}
+
+.callcenter__canales {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.callcenter__canal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+}
+
+.callcenter__canal svg,
+.callcenter__panel-header svg,
+.callcenter__faq-header svg {
+  color: #1d86ee;
+  flex-shrink: 0;
+}
+
+.callcenter__canal h3,
+.callcenter__panel-header h3,
+.callcenter__faq-header h3,
+.callcenter__faq-item h4 {
+  margin: 0;
+  color: #eef2ff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.callcenter__canal p,
+.callcenter__panel-header p,
+.callcenter__faq-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.callcenter__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 18px;
+  align-items: start;
+}
+
+.callcenter__panel {
+  padding: 22px;
+}
+
+.callcenter__panel-header,
+.callcenter__faq-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.callcenter__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.callcenter__usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(29, 134, 238, 0.12);
+  background: rgba(29, 134, 238, 0.07);
+}
+
+.callcenter__avatar {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1d86ee 0%, #ff6b35 100%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.callcenter__avatar-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.callcenter__usuario strong,
+.callcenter__usuario span {
+  display: block;
+}
+
+.callcenter__usuario strong {
+  color: #eef2ff;
+  font-size: 14px;
+}
+
+.callcenter__usuario span {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.callcenter__campos-dobles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.callcenter__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.callcenter__campo span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.callcenter__campo input,
+.callcenter__campo select,
+.callcenter__campo textarea {
+  width: 100%;
+  border: 1px solid rgba(29, 134, 238, 0.22);
+  border-radius: 12px;
+  padding: 12px;
+  color: #eef2ff;
+  background: rgba(5, 12, 29, 0.54);
+  font-family: var(--fuente-cuerpo);
+  font-size: 14px;
+  outline: none;
+}
+
+.callcenter__campo select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 40px;
+  line-height: 1.2;
+  cursor: pointer;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #70b8ff 50%),
+    linear-gradient(135deg, #70b8ff 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.callcenter__campo select {
+  min-height: 44px;
+}
+
+.callcenter__campo select option {
+  color: #eef2ff;
+  background: #0c1838;
+}
+
+.callcenter__campo select option:checked,
+.callcenter__campo select option:hover {
+  background: #1d86ee;
+  color: #ffffff;
+}
+
+.callcenter__campo textarea {
+  resize: vertical;
+  min-height: 132px;
+  line-height: 1.5;
+}
+
+.callcenter__campo input:focus,
+.callcenter__campo select:focus,
+.callcenter__campo textarea:focus {
+  border-color: rgba(29, 134, 238, 0.58);
+  box-shadow: 0 0 0 3px rgba(29, 134, 238, 0.12);
+}
+
+.callcenter__campo input::placeholder,
+.callcenter__campo textarea::placeholder {
+  color: rgba(200, 215, 255, 0.36);
+}
+
+.callcenter__prioridades {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 4px;
+  border: 1px solid rgba(29, 134, 238, 0.12);
+  border-radius: 14px;
+  background: rgba(5, 12, 29, 0.3);
+}
+
+.callcenter__prioridades button {
+  min-height: 48px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: rgba(238, 242, 255, 0.78);
+  background: transparent;
+  font-family: var(--fuente-cuerpo);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.callcenter__prioridades span,
+.callcenter__prioridades small {
+  display: block;
+}
+
+.callcenter__prioridades small {
+  margin-top: 2px;
+  color: rgba(200, 215, 255, 0.48);
+}
+
+.callcenter__prioridades .callcenter__prioridad--activa {
+  color: #eef2ff;
+  border-color: rgba(29, 134, 238, 0.44);
+  background: rgba(29, 134, 238, 0.16);
+}
+
+.callcenter__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.callcenter__check input {
+  width: 16px;
+  height: 16px;
+  accent-color: #1d86ee;
+}
+
+.callcenter__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.callcenter__ticket {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #6ee7b7;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.callcenter__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: var(--radio-boton);
+  color: #fff;
+  background: linear-gradient(135deg, #1d86ee 0%, #ff6b35 100%);
+  box-shadow: 0 8px 24px rgba(29, 134, 238, 0.32);
+  font-family: var(--fuente-cuerpo);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.callcenter__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(29, 134, 238, 0.42);
+}
+
+.callcenter__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.callcenter__tickets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.callcenter__ticket-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(29, 134, 238, 0.12);
+  background: rgba(5, 12, 29, 0.3);
+}
+
+.callcenter__ticket-fila strong,
+.callcenter__ticket-fila span {
+  display: block;
+}
+
+.callcenter__ticket-fila strong {
+  color: #70b8ff;
+  font-size: 13px;
+}
+
+.callcenter__ticket-fila span {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.callcenter__ticket-fila em {
+  flex-shrink: 0;
+  color: #ffaa80;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.callcenter__panel--alerta {
+  display: flex;
+  gap: 12px;
+  border-color: rgba(255, 107, 53, 0.22);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.callcenter__panel--alerta svg {
+  color: #ffaa80;
+  flex-shrink: 0;
+}
+
+.callcenter__panel--alerta h3 {
+  margin: 0 0 6px;
+  color: #eef2ff;
+  font-size: 15px;
+}
+
+.callcenter__panel--alerta p {
+  margin: 0;
+  color: rgba(200, 215, 255, 0.62);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.callcenter__faq {
+  padding: 22px;
+}
+
+.callcenter__faq-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.callcenter__faq-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(29, 134, 238, 0.12);
+  background: rgba(5, 12, 29, 0.3);
+}
+
+.callcenter__faq-item svg {
+  color: #70b8ff;
+}
+
+.callcenter__faq-item h4 {
+  font-size: 14px;
+}
+
+.callcenter__faq-item p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.callcenter__faq-item--destacado {
+  border-color: rgba(255, 107, 53, 0.22);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.callcenter__faq-item--destacado svg {
+  color: #ffaa80;
+}
+
+body.tema-claro .callcenter {
+  color: #172033;
+  background:
+    radial-gradient(ellipse 48% 36% at 10% 5%, rgba(76, 99, 210, 0.14), transparent),
+    radial-gradient(ellipse 42% 42% at 92% 90%, rgba(253, 186, 116, 0.18), transparent),
+    linear-gradient(160deg, #f3f6fc 0%, #e9eef8 100%);
+}
+
+body.tema-claro .callcenter__hero,
+body.tema-claro .callcenter__panel,
+body.tema-claro .callcenter__canal,
+body.tema-claro .callcenter__faq {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(76, 99, 210, 0.14);
+  box-shadow: 0 8px 28px rgba(39, 58, 110, 0.11);
+}
+
+body.tema-claro .callcenter__hero h2,
+body.tema-claro .callcenter__estado strong,
+body.tema-claro .callcenter__canal h3,
+body.tema-claro .callcenter__panel-header h3,
+body.tema-claro .callcenter__usuario strong,
+body.tema-claro .callcenter__panel--alerta h3,
+body.tema-claro .callcenter__faq-header h3,
+body.tema-claro .callcenter__faq-item h4 {
+  color: #172033;
+}
+
+body.tema-claro .callcenter__hero p,
+body.tema-claro .callcenter__panel-header p,
+body.tema-claro .callcenter__canal p,
+body.tema-claro .callcenter__usuario span,
+body.tema-claro .callcenter__campo span,
+body.tema-claro .callcenter__check,
+body.tema-claro .callcenter__ticket-fila span,
+body.tema-claro .callcenter__panel--alerta p,
+body.tema-claro .callcenter__faq-header p,
+body.tema-claro .callcenter__faq-item p {
+  color: #66708a;
+}
+
+body.tema-claro .callcenter__campo input,
+body.tema-claro .callcenter__campo select,
+body.tema-claro .callcenter__campo textarea,
+body.tema-claro .callcenter__prioridades,
+body.tema-claro .callcenter__prioridades button,
+body.tema-claro .callcenter__ticket-fila,
+body.tema-claro .callcenter__faq-item,
+body.tema-claro .callcenter__usuario {
+  color: #172033;
+  background: rgba(247, 249, 255, 0.92);
+  border-color: rgba(76, 99, 210, 0.16);
+}
+
+@media (max-width: 1020px) {
+  .callcenter {
+    padding: 22px;
+  }
+
+  .callcenter__hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .callcenter__estado {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .callcenter__canales,
+  .callcenter__grid,
+  .callcenter__faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .callcenter__lateral {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .callcenter {
+    padding: 16px 14px;
+  }
+
+  .callcenter__hero,
+  .callcenter__panel,
+  .callcenter__canal,
+  .callcenter__faq {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .callcenter__hero h2 {
+    font-size: 23px;
+  }
+
+  .callcenter__campos-dobles,
+  .callcenter__prioridades,
+  .callcenter__lateral {
+    grid-template-columns: 1fr;
+  }
+
+  .callcenter__btn {
+    width: 100%;
+  }
+}

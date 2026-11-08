@@ -1,0 +1,6 @@
+/* Estilos base — los estilos globales están en estilos_globales.css */
+@import './estilos_globales.css';
+@import './utilidades_responsive.css';
+
+body { margin: 0; }
+

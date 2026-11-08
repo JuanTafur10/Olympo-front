@@ -1,0 +1,411 @@
+/* ═══════════════════════════════════════════════════════════════
+   UTILIDADES RESPONSIVE — Clases y mixins para todos los componentes
+   Usa estos estilos en tus páginas y componentes
+═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────
+   CONTENEDORES RESPONSIVOS
+───────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--padding-page);
+}
+
+.container--sm {
+  max-width: 800px;
+}
+
+.container--md {
+  max-width: 1000px;
+}
+
+.container--lg {
+  max-width: 1400px;
+}
+
+
+/* ─────────────────────────────────────────────────
+   GRILLAS RESPONSIVAS
+───────────────────────────────────────────────── */
+
+/* Grid automático - Se adapta al ancho disponible */
+.grid {
+  display: grid;
+  gap: var(--gap-grid);
+  grid-auto-flow: dense;
+}
+
+/* Grid 2 columnas - Se colapsa a 1 en tablet/mobile */
+.grid--2 {
+  display: grid;
+  gap: var(--gap-grid);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Grid 3 columnas */
+.grid--3 {
+  display: grid;
+  gap: var(--gap-grid);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Grid 4 columnas */
+.grid--4 {
+  display: grid;
+  gap: var(--gap-grid);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Tablet: máximo 2 columnas */
+@media (max-width: 768px) {
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Mobile: 1 columna */
+@media (max-width: 480px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────
+   FLEXBOX RESPONSIVO
+───────────────────────────────────────────────── */
+
+.flex {
+  display: flex;
+  gap: var(--gap-card);
+}
+
+.flex--col {
+  flex-direction: column;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex--between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex--wrap {
+  flex-wrap: wrap;
+}
+
+/* Responde al tamaño de pantalla */
+.flex--responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-card);
+}
+
+@media (max-width: 768px) {
+  .flex--responsive {
+    flex-direction: column;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────
+   ESPACIAMIENTO RESPONSIVO
+───────────────────────────────────────────────── */
+
+.p-xl { padding: var(--padding-page); }
+.p-lg { padding: 24px; }
+.p-md { padding: 16px; }
+.p-sm { padding: 12px; }
+.p-xs { padding: 8px; }
+
+.m-xl { margin: var(--padding-page); }
+.m-lg { margin: 24px; }
+.m-md { margin: 16px; }
+.m-sm { margin: 12px; }
+.m-xs { margin: 8px; }
+
+@media (max-width: 768px) {
+  .p-xl { padding: 18px; }
+  .m-xl { margin: 18px; }
+}
+
+@media (max-width: 480px) {
+  .p-xl { padding: 12px; }
+  .m-xl { margin: 12px; }
+}
+
+
+/* ─────────────────────────────────────────────────
+   TIPOGRAFÍA RESPONSIVA
+───────────────────────────────────────────────── */
+
+.text-h1 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.text-h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .text-h1 { font-size: 24px; }
+  .text-h2 { font-size: 18px; }
+  .text-h3 { font-size: 16px; }
+  .text-body { font-size: 13px; }
+  .text-sm { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+  .text-h1 { font-size: 20px; }
+  .text-h2 { font-size: 16px; }
+  .text-h3 { font-size: 14px; }
+  .text-body { font-size: 12px; }
+  .text-sm { font-size: 10px; }
+}
+
+
+/* ─────────────────────────────────────────────────
+   OCULTAR/MOSTRAR ELEMENTOS RESPONSIVOS
+───────────────────────────────────────────────── */
+
+.hidden-tablet {
+  display: block;
+}
+
+.hidden-mobile {
+  display: block;
+}
+
+.hidden-desktop {
+  display: none;
+}
+
+/* Tablet (768px) */
+@media (max-width: 768px) {
+  .hidden-tablet {
+    display: none;
+  }
+  .hidden-desktop {
+    display: block;
+  }
+}
+
+/* Mobile (480px) */
+@media (max-width: 480px) {
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────
+   TARJETAS/CARDS RESPONSIVAS
+───────────────────────────────────────────────── */
+
+.card {
+  background: rgba(15, 26, 56, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 200ms ease;
+}
+
+.card:hover {
+  background: rgba(18, 32, 68, 0.88);
+  border-color: rgba(29, 134, 238, 0.40);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────
+   BOTONES RESPONSIVOS
+───────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 200ms ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────
+   IMÁGENES RESPONSIVAS
+───────────────────────────────────────────────── */
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-square {
+  aspect-ratio: 1;
+  object-fit: cover;
+  width: 100%;
+}
+
+.img-banner {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+
+/* ─────────────────────────────────────────────────
+   FORMULARIOS RESPONSIVOS
+───────────────────────────────────────────────── */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: grid;
+  gap: var(--gap-card);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: rgba(15, 26, 56, 0.5);
+  color: #eef2ff;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(200, 215, 255, 0.4);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: rgba(29, 134, 238, 0.5);
+  background: rgba(15, 26, 56, 0.8);
+}
+
+
+/* ─────────────────────────────────────────────────
+   ANIMACIONES RESPONSIVAS
+───────────────────────────────────────────────── */
+
+@prefers-reduced-motion: reduce {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
+    animation: fadeIn 300ms ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .slide-up {
+    animation: slideUp 300ms ease forwards;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

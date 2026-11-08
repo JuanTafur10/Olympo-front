@@ -1,0 +1,1186 @@
+/* estilos_globales.css — Variables y estilos base de Olympo */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* ───────── PALETA SOFT SAAS DASHBOARD (DEFAULT / OSCURO) ───────── */
+  --color-azul-sidebar:   #2F3E7C;
+  --color-azul-header:    #3C4FA3;
+  --color-azul-boton:     #4C63D2;
+  --color-azul-hover:     #5B74E6;
+  --color-azul-iconos:    #7C8FF5;
+
+  --color-fondo-app:      #F1F4FB;
+  --color-fondo-cards:    #FFFFFF;
+  --color-fondo-seccion:  #F7F9FF;
+  --color-borde-suave:    #E3E8F5;
+
+  --color-texto-principal:   #1F2937;
+  --color-texto-secundario:  #6B7280;
+  --color-texto-menu:        #D6DCFF;
+
+  --color-acento-azul:    #9DB2FF;
+  --color-acento-celeste: #C7D2FE;
+  --color-acento-verde:   #34D399;
+  --color-acento-naranja: #FDBA74;
+
+  /* ── Tipografía ── */
+  --fuente-titulo: 'Cinzel', serif;
+  --fuente-cuerpo: 'Nunito', sans-serif;
+
+  /* ── Sombras ── */
+  --sombra-card: 0 2px 20px rgba(0,0,0,0.08);
+  --sombra-hover: 0 8px 30px rgba(0,0,0,0.15);
+
+  /* ── Bordes ── */
+  --radio-card:   16px;
+  --radio-boton:  50px;
+  --radio-input:  50px;
+
+  /* ── Spacing (Default: Comoda) ── */
+  --padding-page: 32px;
+  --gap-grid: 24px;
+  --gap-card: 16px;
+  --size-font-base: 16px;
+  --transition-speed: 0.3s;
+}
+
+/* 🔵 TEMA OSCURO (Olympo Clásico) */
+body.tema-oscuro {
+  --color-fondo-app:      #0B0E14;
+  --color-fondo-cards:    #161B22;
+  --color-fondo-seccion:  #1C2128;
+  --color-borde-suave:    #30363D;
+  --color-texto-principal: #F0F6FC;
+  --color-texto-secundario: #8B949E;
+  --sombra-card: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* ⚪ TEMA CLARO */
+body.tema-claro {
+  --color-fondo-app:      #F8FAFC;
+  --color-fondo-cards:    #FFFFFF;
+  --color-fondo-seccion:  #F1F5F9;
+  --color-borde-suave:    #E2E8F0;
+  --color-texto-principal: #0F172A;
+  --color-texto-secundario: #475569;
+  --sombra-card: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* 📏 DENSIDAD VISUAL */
+body[data-densidad="compacta"] {
+  --padding-page: 16px;
+  --gap-grid: 12px;
+  --gap-card: 8px;
+  --size-font-base: 14px;
+}
+
+body[data-densidad="amplia"] {
+  --padding-page: 48px;
+  --gap-grid: 32px;
+  --gap-card: 24px;
+  --size-font-base: 18px;
+}
+
+/* 🚫 REDUCIR ANIMACIONES */
+body[data-reducir-animaciones="true"] * {
+  transition: none !important;
+  animation: none !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* ← la página no scrollea */
+  width: 100%;
+}
+
+body {
+  font-family: var(--fuente-cuerpo);
+  background-color: var(--color-fondo);
+  color: var(--color-texto-oscuro);
+
+  /* 👇 el scroll vuelve a la página completa */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.layout,
+.layout__contenido,
+.layout__main,
+.header,
+.dashboard,
+.cuenta,
+.notificaciones,
+.configuracion,
+.callcenter,
+.mensajes,
+.proyectos,
+.mis-solicitudes,
+.chatbot,
+.analiticas,
+.proyecciones,
+.explorar-usuarios {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ── Scrollbar personalizada ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-gris-claro); }
+::-webkit-scrollbar-thumb { background: var(--color-dorado); border-radius: 3px; }
+
+/* ── Utilidades ── */
+.texto-dorado  { color: var(--color-dorado); }
+.texto-azul    { color: var(--color-azul-header); }
+.fondo-dorado  { background: var(--color-dorado); }
+.fondo-azul    { background: var(--color-azul-header); }
+
+
+/* ─────────────────────────────────────────────────
+   RESPONSIVE DESIGN - BREAKPOINTS
+───────────────────────────────────────────────── */
+
+/* Tablet (1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --padding-page: 24px;
+    --gap-grid: 20px;
+  }
+}
+
+/* Tablet pequeño (768px) */
+@media (max-width: 768px) {
+  :root {
+    --padding-page: 18px;
+    --gap-grid: 16px;
+  }
+
+  html, body {
+    overflow: hidden;
+  }
+}
+
+/* Teléfono (480px) */
+@media (max-width: 480px) {
+  :root {
+    --padding-page: 12px;
+    --gap-grid: 12px;
+    --gap-card: 12px;
+  }
+}
+
+/* Pantalla pequeña (380px) */
+@media (max-width: 380px) {
+  :root {
+    --padding-page: 8px;
+    --gap-grid: 8px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Modo claro global: superficies blancas, texto legible y acentos Ambrosia */
+body.tema-claro {
+  --color-fondo-app: #f3f6fc;
+  --color-fondo-cards: #ffffff;
+  --color-fondo-seccion: #f7f9ff;
+  --color-borde-suave: #dbe4f3;
+  --color-texto-principal: #172033;
+  --color-texto-secundario: #66708a;
+  --oly-bg-base: #f3f6fc;
+  --oly-bg-card: rgba(255, 255, 255, 0.9);
+  --oly-bg-card-hover: #ffffff;
+  --oly-bg-highlight: rgba(76, 99, 210, 0.08);
+  --oly-border: rgba(76, 99, 210, 0.14);
+  --oly-border-hover: rgba(76, 99, 210, 0.34);
+  --oly-texto-1: #172033;
+  --oly-texto-2: #66708a;
+  --oly-texto-3: #8a95ad;
+  background: #f3f6fc;
+  color: #172033;
+}
+
+body.tema-claro .layout {
+  background: #f3f6fc;
+}
+
+body.tema-claro .header,
+body.tema-claro .sidebar {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(76, 99, 210, 0.14);
+  box-shadow: 0 8px 28px rgba(39, 58, 110, 0.12);
+}
+
+body.tema-claro .header__titulo,
+body.tema-claro .header__perfil-nombre,
+body.tema-claro .sidebar__logo-nombre,
+body.tema-claro .sidebar__item {
+  color: #172033;
+  -webkit-text-fill-color: initial;
+}
+
+body.tema-claro .header__menu-toggle,
+body.tema-claro .header__notificaciones,
+body.tema-claro .sidebar__logo-subtitulo,
+body.tema-claro .sidebar__seccion-label {
+  color: #66708a;
+}
+
+body.tema-claro .sidebar__item {
+  color: #4b5873;
+}
+
+body.tema-claro .sidebar__item:hover {
+  color: #172033;
+  background: rgba(76, 99, 210, 0.08);
+}
+
+body.tema-claro .sidebar__item--activo {
+  color: #172033 !important;
+  background: rgba(76, 99, 210, 0.13);
+  border-color: rgba(76, 99, 210, 0.24);
+}
+
+body.tema-claro .sidebar__toggle {
+  color: #4b5873;
+  background: #f7f9ff;
+  border-color: rgba(76, 99, 210, 0.18);
+}
+
+body.tema-claro .dashboard,
+body.tema-claro .cuenta,
+body.tema-claro .notificaciones,
+body.tema-claro .configuracion,
+body.tema-claro .callcenter,
+body.tema-claro .mensajes,
+body.tema-claro .proyectos,
+body.tema-claro .mis-solicitudes {
+  color: #172033;
+  background:
+    radial-gradient(ellipse 48% 36% at 10% 5%, rgba(76, 99, 210, 0.12), transparent),
+    radial-gradient(ellipse 42% 42% at 92% 90%, rgba(253, 186, 116, 0.16), transparent),
+    linear-gradient(160deg, #f8faff 0%, #eef3fb 100%);
+}
+
+body.tema-claro .dashboard__card-proyecto,
+body.tema-claro .dashboard__card-grafica,
+body.tema-claro .dashboard__card-riesgo,
+body.tema-claro .dashboard__card-proyeccion,
+body.tema-claro .dashboard__card-proyecto-mini,
+body.tema-claro .cuenta__perfil,
+body.tema-claro .cuenta__verificacion,
+body.tema-claro .notificaciones__buscador,
+body.tema-claro .notificaciones__contenido,
+body.tema-claro .configuracion__hero,
+body.tema-claro .configuracion__panel,
+body.tema-claro .callcenter__hero,
+body.tema-claro .callcenter__panel,
+body.tema-claro .callcenter__canal,
+body.tema-claro .callcenter__faq {
+  color: #172033;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(76, 99, 210, 0.14);
+  box-shadow: 0 8px 28px rgba(39, 58, 110, 0.11);
+}
+
+body.tema-claro h1,
+body.tema-claro h2,
+body.tema-claro h3,
+body.tema-claro h4,
+body.tema-claro .dashboard__card-titulo h3,
+body.tema-claro .dashboard__seccion-titulo,
+body.tema-claro .dashboard__card-proyecto-mini h4,
+body.tema-claro .cuenta__info-nombre h2,
+body.tema-claro .cuenta__verificacion-titulo h3,
+body.tema-claro .notificaciones__der-header h3,
+body.tema-claro .notificaciones__panel-header,
+body.tema-claro .notificaciones__fila-titulo,
+body.tema-claro .configuracion__panel-header h3,
+body.tema-claro .configuracion__fila-texto h3,
+body.tema-claro .callcenter__panel-header h3,
+body.tema-claro .callcenter__faq-item h4 {
+  color: #172033;
+}
+
+body.tema-claro p,
+body.tema-claro span,
+body.tema-claro .dashboard__proyecto-desc,
+body.tema-claro .dashboard__meta-item,
+body.tema-claro .cuenta__ciudad,
+body.tema-claro .cuenta__descripcion,
+body.tema-claro .cuenta__dato-label,
+body.tema-claro .cuenta__dato-valor,
+body.tema-claro .notificaciones__fila-sub,
+body.tema-claro .notificaciones__info-reciente span,
+body.tema-claro .configuracion__hero p,
+body.tema-claro .configuracion__panel-header p,
+body.tema-claro .configuracion__fila-texto p,
+body.tema-claro .callcenter__hero p,
+body.tema-claro .callcenter__panel-header p,
+body.tema-claro .callcenter__faq-item p {
+  color: #66708a;
+}
+
+body.tema-claro input,
+body.tema-claro select,
+body.tema-claro textarea {
+  color: #172033;
+  background-color: #ffffff;
+  border-color: rgba(76, 99, 210, 0.2);
+}
+
+/* Modo claro final: blanco, texto negro y acentos azul oscuro. No aplica al panel admin. */
+body.tema-claro:not(.pagina-admin-activa) {
+  --color-fondo-app: #ffffff;
+  --color-fondo-cards: #ffffff;
+  --color-fondo-seccion: #f6f8fb;
+  --color-borde-suave: #d7deea;
+  --color-texto-principal: #060b14;
+  --color-texto-secundario: #303b4f;
+  --oly-azul-vivo: #12345f;
+  --oly-azul-oscuro: #071a33;
+  --oly-azul-suave: rgba(18, 52, 95, 0.1);
+  --oly-naranja: #865a18;
+  --oly-naranja-suave: rgba(134, 90, 24, 0.12);
+  --oly-bg-base: #ffffff;
+  --oly-bg-card: #ffffff;
+  --oly-bg-card-hover: #f9fbfe;
+  --oly-bg-highlight: rgba(18, 52, 95, 0.07);
+  --oly-border: rgba(7, 26, 51, 0.14);
+  --oly-border-hover: rgba(7, 26, 51, 0.32);
+  --oly-border-strong: rgba(7, 26, 51, 0.24);
+  --oly-texto-1: #060b14;
+  --oly-texto-2: #303b4f;
+  --oly-texto-3: #5c6678;
+  --oly-grad-marca: linear-gradient(135deg, #071a33 0%, #12345f 100%);
+  --oly-grad-marca-sutil: linear-gradient(135deg, rgba(7, 26, 51, 0.09), rgba(18, 52, 95, 0.05));
+  --oly-sombra-card: 0 14px 36px rgba(7, 26, 51, 0.09);
+  --oly-sombra-hover: 0 18px 44px rgba(7, 26, 51, 0.14);
+  --oly-sombra-boton: 0 8px 20px rgba(7, 26, 51, 0.2);
+  --oly-sombra-boton-h: 0 12px 28px rgba(7, 26, 51, 0.26);
+  background: #ffffff;
+  color: #060b14;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .layout,
+body.tema-claro:not(.pagina-admin-activa) .layout__contenido,
+body.tema-claro:not(.pagina-admin-activa) .layout__main,
+body.tema-claro:not(.pagina-admin-activa) .main-content,
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard,
+  .dashboard-inversionista,
+  .pagina-proyectos,
+  .proyectos,
+  .mis-solicitudes,
+  .mensajes,
+  .notificaciones,
+  .chatbot,
+  .cuenta,
+  .configuracion,
+  .callcenter,
+  .analiticas,
+  .proyecciones,
+  .explorar-usuarios
+) {
+  background: #ffffff !important;
+  color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .header,
+body.tema-claro:not(.pagina-admin-activa) .sidebar {
+  background: #ffffff !important;
+  border-color: #d7deea !important;
+  box-shadow: 0 10px 28px rgba(7, 26, 51, 0.08) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .sidebar__item,
+body.tema-claro:not(.pagina-admin-activa) .sidebar__logo-nombre,
+body.tema-claro:not(.pagina-admin-activa) .header__titulo,
+body.tema-claro:not(.pagina-admin-activa) .header__perfil-nombre,
+body.tema-claro:not(.pagina-admin-activa) .header__notificaciones,
+body.tema-claro:not(.pagina-admin-activa) .header__menu-toggle {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .sidebar__logo-subtitulo,
+body.tema-claro:not(.pagina-admin-activa) .sidebar__seccion-label,
+body.tema-claro:not(.pagina-admin-activa) .header__perfil-tipo,
+body.tema-claro:not(.pagina-admin-activa) .sidebar__etiqueta {
+  color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .sidebar__item:hover,
+body.tema-claro:not(.pagina-admin-activa) .sidebar__item--activo {
+  color: #060b14 !important;
+  background: rgba(7, 26, 51, 0.07) !important;
+  border-color: rgba(7, 26, 51, 0.18) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .sidebar__item-pip,
+body.tema-claro:not(.pagina-admin-activa) .header__notificaciones-badge {
+  background: #071a33 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  h1, h2, h3, h4, h5, h6,
+  strong,
+  .dashboard__card-titulo h3,
+  .dashboard__seccion-titulo,
+  .dashboard__card-proyecto-mini h4,
+  .dashboard__riesgo-label,
+  .dashboard__proyeccion-label,
+  .proyectos__titulo,
+  .proyectos__header h1,
+  .proyectos__nombre strong,
+  .proyectos__fecha span,
+  .proyectos__presupuesto,
+  .proyectos__card-header h3,
+  .proyectos__meta-valor,
+  .solicitudes__header h3,
+  .solicitudes__meta-valor,
+  .mis-solicitudes__titulo,
+  .mensajes__titulo,
+  .notificaciones__panel-header,
+  .notificaciones__fila-titulo,
+  .chatbot__titulo-olympo,
+  .chatbot__titulo-texto,
+  .cuenta__info-nombre h2,
+  .cuenta__verificacion-titulo h3,
+  .configuracion__hero h2,
+  .configuracion__panel-header h3,
+  .configuracion__fila-texto h3,
+  .configuracion__seguridad strong,
+  .callcenter__hero h2,
+  .callcenter__canal h3,
+  .callcenter__panel-header h3,
+  .callcenter__faq-item h4,
+  .analiticas__header h1,
+  .analiticas__card h3,
+  .analiticas__chart h3,
+  .proyecciones__header h1,
+  .proyecciones__card-title
+) {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  p, span, label, li, td, th,
+  .dashboard__proyecto-desc,
+  .dashboard__meta-item,
+  .dashboard__riesgo-sub,
+  .dashboard__proyeccion-sub,
+  .dashboard__grafica-leyenda-item,
+  .proyectos__subtitulo,
+  .proyectos__descripcion,
+  .proyectos__hora,
+  .proyectos__generando,
+  .proyectos__meta-label,
+  .solicitudes__propuesta,
+  .solicitudes__meta-label,
+  .mis-solicitudes__descripcion,
+  .mensajes__texto,
+  .notificaciones__fila-sub,
+  .notificaciones__info-reciente span,
+  .chatbot__subtitulo,
+  .chatbot__hora,
+  .cuenta__seccion-titulo,
+  .cuenta__ciudad,
+  .cuenta__descripcion,
+  .cuenta__dato-label,
+  .cuenta__dato-valor,
+  .cuenta__verificacion-item,
+  .cuenta__verificacion-alerta p,
+  .configuracion__hero p,
+  .configuracion__panel-header p,
+  .configuracion__fila-texto p,
+  .configuracion__selector span,
+  .configuracion__seguridad span,
+  .configuracion__nota,
+  .callcenter__hero p,
+  .callcenter__panel-header p,
+  .callcenter__canal p,
+  .callcenter__usuario span,
+  .callcenter__campo span,
+  .callcenter__check,
+  .callcenter__ticket-fila span,
+  .callcenter__faq-item p,
+  .analiticas__header p,
+  .analiticas__empty,
+  .proyecciones__descripcion
+) {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__card-proyecto,
+  .dashboard__card-grafica,
+  .dashboard__card-riesgo,
+  .dashboard__card-proyeccion,
+  .dashboard__card-proyecto-mini,
+  .dashboard__card-ia,
+  .proyectos__card,
+  .skeleton-card,
+  .proyectos__fila,
+  .solicitudes__card,
+  .mis-solicitudes__card,
+  .mis-solicitudes__panel,
+  .mensajes__panel,
+  .mensajes__sidebar,
+  .mensajes__chat,
+  .notificaciones__buscador,
+  .notificaciones__contenido,
+  .notificaciones__fila,
+  .chatbot__ventana,
+  .chatbot__titulo-bar,
+  .chatbot__subtitulo,
+  .chatbot__mensajes,
+  .chatbot__input-area,
+  .cuenta__perfil,
+  .cuenta__verificacion,
+  .configuracion__hero,
+  .configuracion__panel,
+  .configuracion__seguridad div,
+  .callcenter__hero,
+  .callcenter__panel,
+  .callcenter__canal,
+  .callcenter__faq,
+  .callcenter__faq-item,
+  .callcenter__usuario,
+  .callcenter__ticket-fila,
+  .analiticas__card,
+  .analiticas__chart,
+  .proyecciones__card,
+  .modal__content,
+  .modal-card
+) {
+  background: #ffffff !important;
+  color: #060b14 !important;
+  border-color: #d7deea !important;
+  box-shadow: 0 12px 32px rgba(7, 26, 51, 0.08) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__card-proyecto:hover,
+  .dashboard__card-grafica:hover,
+  .dashboard__card-riesgo:hover,
+  .dashboard__card-proyeccion:hover,
+  .dashboard__card-proyecto-mini:hover,
+  .proyectos__card:hover,
+  .proyectos__fila:hover,
+  .solicitudes__card:hover,
+  .callcenter__faq-item:hover
+) {
+  background: #f9fbfe !important;
+  border-color: rgba(7, 26, 51, 0.28) !important;
+  box-shadow: 0 16px 40px rgba(7, 26, 51, 0.12) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  input, select, textarea,
+  .proyectos__busqueda,
+  .modal__formulario input,
+  .modal__formulario textarea,
+  .chatbot__input,
+  .callcenter__campo input,
+  .callcenter__campo select,
+  .callcenter__campo textarea,
+  .configuracion__selector select,
+  .configuracion__tema-opcion,
+  .configuracion__segmentado,
+  .configuracion__segmentado button,
+  .mensajes__input,
+  .notificaciones__input
+) {
+  background: #ffffff !important;
+  color: #060b14 !important;
+  border-color: #c8d1df !important;
+  -webkit-text-fill-color: #060b14 !important;
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(input, textarea, .proyectos__busqueda, .chatbot__input)::placeholder {
+  color: #6c7585 !important;
+  -webkit-text-fill-color: #6c7585 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  button,
+  .boton,
+  .dashboard__card-opciones,
+  .dashboard__link,
+  .dashboard__ver-mas,
+  .dashboard__boton-editar,
+  .dashboard__boton-ver,
+  .proyectos__btn-nuevo,
+  .proyectos__btn-editar,
+  .proyectos__btn-analisis,
+  .proyectos__boton-analisis,
+  .proyectos__boton-analisis-small,
+  .proyectos__boton-contactar,
+  .proyectos__boton-invertir,
+  .proyectos__boton-expandir,
+  .proyectos__ver-todos-btn,
+  .proyectos__filtro,
+  .proyectos__filtro-btn,
+  .cuenta__btn-editar,
+  .cuenta__btn-actualizar,
+  .cuenta__btn-contrasena,
+  .cuenta__btn-subir,
+  .configuracion__btn,
+  .configuracion__switch,
+  .callcenter__btn,
+  .callcenter__prioridades button,
+  .chatbot__btn-enviar,
+  .notificaciones__accion,
+  .mensajes__boton
+) {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__boton-editar,
+  .dashboard__boton-ver,
+  .proyectos__btn-nuevo,
+  .proyectos__btn-guardar,
+  .proyectos__boton-invertir,
+  .boton--primario,
+  .cuenta__btn-actualizar,
+  .cuenta__btn-subir,
+  .configuracion__btn--primario,
+  .callcenter__btn,
+  .chatbot__btn-enviar,
+  .solicitudes__boton--chat
+) {
+  background: #071a33 !important;
+  border: 1px solid #071a33 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(7, 26, 51, 0.18) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .proyectos__boton-contactar,
+  .proyectos__boton-analisis,
+  .proyectos__boton-analisis-small,
+  .proyectos__boton-expandir,
+  .proyectos__btn-analisis,
+  .boton--secundario,
+  .boton--ia,
+  .cuenta__btn-contrasena,
+  .configuracion__btn--secundario,
+  .configuracion__tema-opcion,
+  .configuracion__segmentado button,
+  .solicitudes__boton--acuerdo
+) {
+  background: #ffffff !important;
+  border: 1px solid #c8d1df !important;
+  color: #071a33 !important;
+  -webkit-text-fill-color: #071a33 !important;
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .configuracion__tema-opcion--activa,
+  .configuracion__segmentado .configuracion__segmento--activo,
+  .proyectos__filtro--activo,
+  .callcenter__prioridad--activa
+) {
+  background: rgba(7, 26, 51, 0.08) !important;
+  border-color: #071a33 !important;
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .configuracion__switch {
+  background: #eef2f7 !important;
+  border-color: #c8d1df !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .configuracion__switch-bola {
+  background: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(7, 26, 51, 0.22);
+}
+
+body.tema-claro:not(.pagina-admin-activa) .configuracion__switch--activo {
+  background: #071a33 !important;
+  border-color: #071a33 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__proyecto-thumb,
+  .cuenta__avatar-grande,
+  .cuenta__badge-tipo,
+  .header__avatar,
+  .callcenter__avatar,
+  .chatbot__avatar-usuario,
+  .chatbot__avatar-bot
+) {
+  background: #071a33 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__proyecto-thumb *,
+  .header__avatar *,
+  .cuenta__avatar-grande *,
+  .chatbot__btn-enviar *,
+  .callcenter__btn *,
+  .configuracion__btn--primario *,
+  .boton--primario *
+) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__solicitudes-label,
+  .dashboard__ia-label,
+  .dashboard__riesgo-icono,
+  .dashboard__proyeccion-icono,
+  .dashboard__ia-icono,
+  .cuenta__dato-icono,
+  .cuenta__btn-editar,
+  .configuracion__eyebrow,
+  .configuracion__panel-header svg,
+  .configuracion__fila-icono,
+  .callcenter__eyebrow,
+  .callcenter__panel-header svg,
+  .callcenter__estado-icono,
+  .proyectos__filtro-btn,
+  .proyectos__ver-todos-btn
+) {
+  color: #071a33 !important;
+  -webkit-text-fill-color: #071a33 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .dashboard__meta-item,
+  .dashboard__loading,
+  .cuenta__descripcion,
+  .cuenta__dato-fila:hover,
+  .configuracion__fila-icono,
+  .configuracion__nota,
+  .callcenter__ticket,
+  .proyectos__loading,
+  .solicitudes__contacto-info-card,
+  .contacto-info-item
+) {
+  background: #f6f8fb !important;
+  border-color: #d7deea !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .proyectos__tabla-header,
+  .modal__analisis-header,
+  .modal__analisis-acciones,
+  .chatbot__titulo-bar
+) {
+  background: #f6f8fb !important;
+  color: #060b14 !important;
+  border-color: #d7deea !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(.modal__overlay, .modal-overlay, .mis-solicitudes__modal-overlay) {
+  background: rgba(7, 26, 51, 0.36) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .modal__content--analisis,
+  .mis-solicitudes__modal-content,
+  .modal-card
+) {
+  background: #ffffff !important;
+  color: #060b14 !important;
+  border-color: #d7deea !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .modal__analisis-contenido,
+  .modal__analisis-contenido p,
+  .modal__analisis-contenido li,
+  .modal__analisis-contenido blockquote
+) {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .modal__analisis-contenido h3,
+  .modal__analisis-contenido strong,
+  .modal__analisis-titulo,
+  .modal__content h2,
+  .modal__formulario label span,
+  .mis-solicitudes__modal-title
+) {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(
+  .recharts-text,
+  .recharts-cartesian-axis-tick-value,
+  .recharts-legend-item-text
+) {
+  fill: #303b4f !important;
+  color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) :where(.recharts-cartesian-grid line) {
+  stroke: #d7deea !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) ::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+body.tema-claro:not(.pagina-admin-activa) ::-webkit-scrollbar-thumb {
+  background: #9aa7ba;
+}
+
+/* La pagina de administracion conserva el aspecto oscuro aunque el usuario elija claro. */
+body.tema-claro.pagina-admin-activa {
+  background: #080f1e;
+}
+
+body.tema-claro.pagina-admin-activa .layout,
+body.tema-claro.pagina-admin-activa .layout__contenido,
+body.tema-claro.pagina-admin-activa .layout__main {
+  background: #080f1e;
+}
+
+/* Modo claro tambien debe aplicar en administracion. */
+body.tema-claro.pagina-admin-activa,
+body.tema-claro.pagina-admin-activa .layout,
+body.tema-claro.pagina-admin-activa .layout__contenido,
+body.tema-claro.pagina-admin-activa .layout__main,
+body.tema-claro.pagina-admin-activa .main-content,
+body.tema-claro.pagina-admin-activa .administracion,
+body.tema-claro.pagina-admin-activa .soporte-admin {
+  background: #ffffff !important;
+  color: #060b14 !important;
+}
+
+body.tema-claro.pagina-admin-activa .header,
+body.tema-claro.pagina-admin-activa .sidebar {
+  background: #ffffff !important;
+  border-color: #d7deea !important;
+  box-shadow: 0 10px 28px rgba(7, 26, 51, 0.08) !important;
+}
+
+body.tema-claro.pagina-admin-activa .header__titulo,
+body.tema-claro.pagina-admin-activa .header__perfil-nombre,
+body.tema-claro.pagina-admin-activa .header__notificaciones,
+body.tema-claro.pagina-admin-activa .header__menu-toggle,
+body.tema-claro.pagina-admin-activa .sidebar__item,
+body.tema-claro.pagina-admin-activa .sidebar__logo-nombre {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro.pagina-admin-activa .header__perfil-tipo,
+body.tema-claro.pagina-admin-activa .sidebar__logo-subtitulo,
+body.tema-claro.pagina-admin-activa .sidebar__seccion-label,
+body.tema-claro.pagina-admin-activa .sidebar__etiqueta {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+/* Ajustes puntuales de modo claro para vistas con fondos propios. */
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-thumb {
+  background: #ffffff !important;
+  border: 1px solid #d7deea !important;
+  box-shadow: 0 12px 30px rgba(7, 26, 51, 0.1) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-thumb::before,
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-thumb::after {
+  background: rgba(7, 26, 51, 0.04) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-thumb,
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-thumb *,
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-label,
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__proyecto-fecha {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .dashboard__destacados-container .dashboard__ver-mas {
+  background: #ffffff !important;
+  border: 1px solid #12345f !important;
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__buscador,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contenido,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__lista,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat-header,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__burbuja-contenedor,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__input-area {
+  background: #ffffff !important;
+  border-color: #d7deea !important;
+  color: #060b14 !important;
+  box-shadow: 0 12px 32px rgba(7, 26, 51, 0.08) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__lista {
+  border-right: 1px solid #d7deea !important;
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat-header,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__input-area {
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto {
+  background: #ffffff !important;
+  color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto:hover,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto--activo {
+  background: #eef3f8 !important;
+  border-left-color: #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto-info strong,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto-nombre,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat-info strong,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__lista-header,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__burbuja p,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__input,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__buscador-input {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto-info span,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat-estado,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__hora,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__opciones {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__burbuja--bot {
+  background: #eaf3fb !important;
+  border: 1px solid #bfd5eb !important;
+  color: #060b14 !important;
+  box-shadow: 0 8px 18px rgba(7, 26, 51, 0.12) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__burbuja--usuario {
+  background: #f0f3f8 !important;
+  border: 1px solid #d7deea !important;
+  color: #060b14 !important;
+  box-shadow: 0 8px 18px rgba(7, 26, 51, 0.12) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__bot-avatar {
+  background: #eaf3fb !important;
+  color: #12345f !important;
+  -webkit-text-fill-color: #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__usuario-avatar,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__contacto-avatar,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__chat-avatar {
+  background: #12345f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__btn-explorar,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__btn-enviar {
+  background: #12345f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__btn-reunion {
+  background: #12345f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(7, 26, 51, 0.18) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .mensajes__btn-perfil,
+body.tema-claro:not(.pagina-admin-activa) .mensajes__btn-cerrar {
+  background: #ffffff !important;
+  border: 1px solid #c8d1df !important;
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__buscador,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__contenido,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__panel-izq,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__panel-der {
+  background: #ffffff !important;
+  border-color: #d7deea !important;
+  color: #060b14 !important;
+  box-shadow: 0 12px 32px rgba(7, 26, 51, 0.08) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__panel-izq {
+  border-right: 1px solid #d7deea !important;
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__panel-der {
+  box-shadow: none !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__panel-header,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__der-header h3,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila-titulo,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__info-reciente strong,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__buscador-input {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__estado-vacio,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__item-reciente,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila {
+  background: #f6f8fb !important;
+  border-color: #d7deea !important;
+  color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__item-reciente:hover,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila:hover,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila--nueva {
+  background: #eef3f8 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila-sub,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila-tiempo,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__info-reciente span,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__chevron,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__chevron-der {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__icon-bell,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__estado-vacio--icono,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__estado-vacio--marker,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__icono-reciente,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__fila-icono {
+  background: #eaf3fb !important;
+  color: #12345f !important;
+  -webkit-text-fill-color: #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__icon-bell svg path,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__icon-bell svg circle {
+  stroke: #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__btn-ver-todo {
+  background: #12345f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__btn-leido,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__pestana--activa,
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__ver-mas {
+  color: #12345f !important;
+  -webkit-text-fill-color: #12345f !important;
+  border-bottom-color: #12345f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .notificaciones__pestana {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login,
+body.tema-claro:not(.pagina-admin-activa) .login__fondo {
+  background: #ffffff !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__fondo {
+  background:
+    radial-gradient(ellipse 45% 36% at 10% 10%, rgba(18, 52, 95, 0.08), transparent),
+    linear-gradient(160deg, #ffffff 0%, #f6f8fb 100%) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__tarjeta {
+  background: #ffffff !important;
+  border: 1px solid #d7deea !important;
+  box-shadow: 0 24px 60px rgba(7, 26, 51, 0.12) !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__logo-texto-olympo,
+body.tema-claro:not(.pagina-admin-activa) .login__subtitulo,
+body.tema-claro:not(.pagina-admin-activa) .login__tipo-btn,
+body.tema-claro:not(.pagina-admin-activa) .login__modo-btn,
+body.tema-claro:not(.pagina-admin-activa) .login__input,
+body.tema-claro:not(.pagina-admin-activa) .login__campo label {
+  color: #060b14 !important;
+  -webkit-text-fill-color: #060b14 !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__logo-texto-eng,
+body.tema-claro:not(.pagina-admin-activa) .login__campo-icono {
+  color: #303b4f !important;
+  -webkit-text-fill-color: #303b4f !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__campo,
+body.tema-claro:not(.pagina-admin-activa) .login__tipo-btn,
+body.tema-claro:not(.pagina-admin-activa) .login__modo-btn {
+  background: #ffffff !important;
+  border: 1px solid #c8d1df !important;
+}
+
+body.tema-claro:not(.pagina-admin-activa) .login__tipo-btn--activo,
+body.tema-claro:not(.pagina-admin-activa) .login__modo-btn--activo,
+body.tema-claro:not(.pagina-admin-activa) .login__boton-empezar {
+  background: #12345f !important;
+  border-color: #12345f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(7, 26, 51, 0.18) !important;
+}

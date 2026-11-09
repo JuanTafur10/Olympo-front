@@ -8,6 +8,13 @@ const FIREBASE_CONFIG = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "",
 };
 
+const firebase_configurado = () => Boolean(
+  FIREBASE_CONFIG.apiKey
+  && FIREBASE_CONFIG.authDomain
+  && FIREBASE_CONFIG.projectId
+  && FIREBASE_CONFIG.appId
+);
+
 const obtenerFirebase = () => {
   if (typeof window === "undefined" || !window.firebase) {
     throw new Error("Firebase no está cargado en el navegador");
@@ -28,6 +35,7 @@ const obtenerAuth = () => obtenerFirebase().auth();
 export const obtenerFirestoreChat = () => obtenerFirebase().firestore();
 
 export const iniciarSesionFirebaseCliente = async (email, password) => {
+  if (!firebase_configurado()) return null;
   const firebase = obtenerFirebase();
   const auth = obtenerAuth();
 
@@ -40,6 +48,7 @@ export const iniciarSesionFirebaseCliente = async (email, password) => {
 };
 
 export const cerrarSesionFirebaseCliente = async () => {
+  if (!firebase_configurado()) return;
   const auth = obtenerAuth();
   if (auth.currentUser) {
     await auth.signOut();
@@ -52,6 +61,10 @@ export const obtenerUsuarioFirebaseCliente = () => {
 };
 
 export const suscribirseAuthFirebaseCliente = (onCambio) => {
+  if (!firebase_configurado()) {
+    onCambio(null);
+    return () => {};
+  }
   const auth = obtenerAuth();
   return auth.onAuthStateChanged((usuario) => onCambio(usuario || null));
 };

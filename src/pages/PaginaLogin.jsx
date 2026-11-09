@@ -1,14 +1,18 @@
 // PaginaLogin.jsx — Página de inicio de sesión de Olympo
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContextoApp } from "../context/contexto_app";
 import logo from "../image.png";
 import "./PaginaLogin.css";
 
 export default function PaginaLogin() {
   const { iniciar_sesion, registrar_usuario } = useContextoApp();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const modo_ruta = location.pathname === "/register" ? "register" : "login";
 
   // Variables de estado del formulario
-  const [modo, set_modo] = useState("login"); // "login" o "register"
+  const [modo, set_modo] = useState(modo_ruta); // "login" o "register"
   const [tipo_usuario_seleccionado, set_tipo_usuario_seleccionado] = useState("emprendedor");
   const [nombre_usuario_input, set_nombre_usuario_input] = useState("");
   const [descripcion_input, set_descripcion_input] = useState("");
@@ -19,6 +23,19 @@ export default function PaginaLogin() {
   const [mensaje_estado, set_mensaje_estado] = useState("");
   const [mensaje_estado_tipo, set_mensaje_estado_tipo] = useState("error");
   const [cargando, set_cargando] = useState(false);
+
+  useEffect(() => {
+    set_modo(modo_ruta);
+  }, [modo_ruta]);
+
+  const cambiar_modo = (nuevo_modo) => {
+    set_modo(nuevo_modo);
+    navigate(nuevo_modo === "register" ? "/register" : "/login");
+    set_mensaje_estado("");
+    if (nuevo_modo === "register" && tipo_usuario_seleccionado === "admin") {
+      set_tipo_usuario_seleccionado("emprendedor");
+    }
+  };
 
   const _manejar_envio = async () => {
     set_mensaje_estado("");
@@ -185,18 +202,13 @@ export default function PaginaLogin() {
         <div className="login__modo-selector">
           <button
             className={`login__modo-btn ${modo === "login" ? "login__modo-btn--activo" : ""}`}
-            onClick={() => set_modo("login")}
+            onClick={() => cambiar_modo("login")}
           >
             INICIAR SESIÓN
           </button>
           <button
             className={`login__modo-btn ${modo === "register" ? "login__modo-btn--activo" : ""}`}
-            onClick={() => {
-              set_modo("register");
-              if (tipo_usuario_seleccionado === "admin") {
-                set_tipo_usuario_seleccionado("emprendedor");
-              }
-            }}
+            onClick={() => cambiar_modo("register")}
           >
             REGISTRARSE
           </button>

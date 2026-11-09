@@ -1,11 +1,12 @@
 // App.js — Punto de entrada principal de la aplicación Ambriosa
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ProveedorApp, useContextoApp } from "./context/contexto_app";
 import LayoutPrincipal from "./components/layout/LayoutPrincipal";
 import NotificacionesGlobales from "./components/NotificacionesGlobales";
 import TraductorGlobal from "./i18n/TraductorGlobal";
 import PaginaLogin from "./pages/PaginaLogin";
+import PaginaNoEncontrada from "./pages/PaginaNoEncontrada";
 
 // Páginas comunes
 import PaginaMensajes from "./pages/PaginaMensajes";
@@ -34,8 +35,34 @@ import PaginaSolicitudesInversionista from "./pages/PaginaSolicitudesInversionis
 
 import "./estilos_globales.css";
 
+function RutaDeAcceso() {
+  const { esta_autenticado } = useContextoApp();
+  return esta_autenticado ? <Navigate to="/" replace /> : <PaginaLogin />;
+}
+
+function RutasPrivadas() {
+  const { esta_autenticado, sesion_cargando } = useContextoApp();
+  const location = useLocation();
+
+  if (sesion_cargando) {
+    return <div className="app-verificando-sesion" role="status">Verificando tu sesión…</div>;
+  }
+  if (!esta_autenticado) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return <><NotificacionesGlobales /><LayoutPrincipal><Outlet /></LayoutPrincipal></>;
+}
+
+function SoloAdministracion() {
+  const { datos_usuario } = useContextoApp();
+  const rol = String(datos_usuario?.role || datos_usuario?.rol || datos_usuario?.tipo_usuario || "").toLowerCase();
+  const es_admin = Boolean(datos_usuario?.es_admin || rol === "admin");
+  return es_admin ? <Outlet /> : <Navigate to="/dashboard" replace />;
+}
+
 function ContenidoApp() {
-  const { esta_autenticado, datos_usuario } = useContextoApp();
+  const { datos_usuario } = useContextoApp();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -49,18 +76,6 @@ function ContenidoApp() {
     document.body.classList.toggle("pagina-admin-activa", location.pathname.startsWith("/admin"));
   }, [location.pathname]);
 
-  if (!esta_autenticado) {
-    return (
-      <>
-        <TraductorGlobal />
-        <Routes>
-          <Route path="/login" element={<PaginaLogin />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </>
-    );
-  }
-
   // Seleccionar mapa según rol
   const rol_usuario = (datos_usuario?.tipo_usuario || "").toLowerCase();
   const esAdmin = Boolean(datos_usuario?.es_admin || rol_usuario === "admin");
@@ -69,13 +84,15 @@ function ContenidoApp() {
   return (
     <>
       <TraductorGlobal />
-      <NotificacionesGlobales />
-      <LayoutPrincipal>
-        <Routes>
-          <Route path="/login" element={<Navigate to="/" replace />} />
+      <Routes>
+        <Route path="/login" element={<RutaDeAcceso />} />
+        <Route path="/register" element={<RutaDeAcceso />} />
+        <Route element={<RutasPrivadas />}>
           <Route path="/" element={<Navigate to={esAdmin ? "/admin" : "/dashboard"} replace />} />
-          <Route path="/admin" element={esAdmin ? <PaginaAdministracion /> : <Navigate to="/dashboard" replace />} />
-          <Route path="/admin-tickets" element={esAdmin ? <PaginaSoporteAdmin /> : <Navigate to="/dashboard" replace />} />
+          <Route element={<SoloAdministracion />}>
+            <Route path="/admin" element={<PaginaAdministracion />} />
+            <Route path="/admin-tickets" element={<PaginaSoporteAdmin />} />
+          </Route>
           <Route path="/dashboard" element={esAdmin ? <PaginaAdministracion /> : (esInversionista ? <PaginaDashboardInversionista /> : <PaginaDashboard />)} />
           <Route path="/proyectos" element={esInversionista ? <PaginaProyectosInversionista /> : <PaginaProyectos />} />
           <Route path="/solicitudes" element={esInversionista ? <PaginaSolicitudesInversionista /> : <PaginaMisSolicitudes />} />
@@ -90,9 +107,9 @@ function ContenidoApp() {
           {!esInversionista && <Route path="/proyecciones" element={<PaginaProyecciones />} />}
           {!esInversionista && <Route path="/analiticas" element={<PaginaAnaliticas />} />}
           {!esInversionista && !esAdmin && <Route path="/riesgos" element={<PaginaRiesgos />} />}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </LayoutPrincipal>
+        </Route>
+        <Route path="*" element={<PaginaNoEncontrada />} />
+      </Routes>
     </>
   );
 }

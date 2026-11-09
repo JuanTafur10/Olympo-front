@@ -66,6 +66,7 @@ export function ProveedorApp({ children }) {
 
   // Estado de sesión
   const [esta_autenticado, set_esta_autenticado] = useState(Boolean(token_guardado));
+  const [sesion_cargando, set_sesion_cargando] = useState(Boolean(token_guardado));
   const [datos_usuario, set_datos_usuario] = useState(() => {
     if (!usuario_guardado) return {};
     try {
@@ -437,6 +438,8 @@ export function ProveedorApp({ children }) {
         try { localStorage.setItem("olympo_usuario", JSON.stringify(usuario_normalizado)); } catch(_) {}
       } catch (err) {
         console.warn("No se pudo recargar usuario desde DB:", err);
+      } finally {
+        set_sesion_cargando(false);
       }
     };
 
@@ -537,6 +540,7 @@ export function ProveedorApp({ children }) {
   const cerrar_sesion = useCallback(() => {
     cerrarSesionFirebaseCliente().catch(() => {});
     set_esta_autenticado(false);
+    set_sesion_cargando(false);
     localStorage.removeItem("olympo_token");
     establecer_token_sesion(null);
     localStorage.removeItem("olympo_usuario");
@@ -630,6 +634,7 @@ export function ProveedorApp({ children }) {
 
   const valor_contexto = {
     esta_autenticado,
+    sesion_cargando,
     datos_usuario,
     mensajes_bot,
     establecer_mensajes_bot: (msgs) => set_mensajes_bot(msgs),

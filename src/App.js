@@ -26,9 +26,13 @@ import PaginaRiesgos from "./views/PaginaRiesgos";
 import PaginaDashboardInversionista from "./views/PaginaDashboardInversionista";
 import PaginaProyectosInversionista from "./views/PaginaProyectosInversionista";
 import PaginaSolicitudesInversionista from "./views/PaginaSolicitudesInversionista";
+import LandingPage from "./components/marketplace/LandingPage";
+import ProjectListPage from "./components/marketplace/ProjectListPage";
+import ProjectDetailPage from "./components/marketplace/ProjectDetailPage";
+import MarketplaceHeader from "./components/marketplace/MarketplaceHeader";
 
 const rutas_privadas = new Set([
-  "/", "/dashboard", "/admin", "/admin-tickets", "/proyectos", "/solicitudes",
+  "/dashboard", "/admin", "/admin-tickets", "/solicitudes",
   "/mensajes", "/explorar-usuarios", "/chatbot", "/notificaciones", "/cuenta",
   "/perfil-contacto", "/configuracion", "/callcenter", "/proyecciones",
   "/analiticas", "/riesgos",
@@ -46,6 +50,7 @@ export default function App() {
   const es_admin = esRolAdmin(datos_usuario);
   const rol_usuario = String(datos_usuario?.tipo_usuario || "").toLowerCase();
   const es_inversionista = rol_usuario.includes("inversionista");
+  const projectDetailMatch = pathname.match(/^\/proyectos\/([^/]+)$/);
 
   useEffect(() => {
     const manejar_sesion_expirada = () => router.replace("/login");
@@ -65,6 +70,10 @@ export default function App() {
       router.replace(es_admin ? "/admin" : "/dashboard");
       return;
     }
+    if (pathname === "/" && esta_autenticado) {
+      router.replace(es_admin ? "/admin" : "/dashboard");
+      return;
+    }
     if (rutas_privadas.has(pathname) && !esta_autenticado) {
       router.replace("/login");
       return;
@@ -78,9 +87,6 @@ export default function App() {
       router.replace("/dashboard");
       return;
     }
-    if (pathname === "/" && esta_autenticado) {
-      router.replace(es_admin ? "/admin" : "/dashboard");
-    }
   }, [esta_autenticado, es_admin, es_inversionista, pathname, router, sesion_cargando]);
 
   if (sesion_cargando) {
@@ -90,6 +96,19 @@ export default function App() {
   if (pathname === "/login" || pathname === "/register") {
     if (esta_autenticado) return null;
     return <><TraductorGlobal /><PaginaLogin /></>;
+  }
+
+  if (pathname === "/") {
+    if (esta_autenticado) return null;
+    return <LandingPage />;
+  }
+
+  if (pathname === "/proyectos" || projectDetailMatch) {
+    const marketplace = projectDetailMatch
+      ? <ProjectDetailPage projectId={decodeURIComponent(projectDetailMatch[1])} />
+      : <ProjectListPage />;
+    if (esta_autenticado) return <><TraductorGlobal /><NotificacionesGlobales /><LayoutPrincipal>{marketplace}</LayoutPrincipal></>;
+    return <><MarketplaceHeader /><TraductorGlobal />{marketplace}</>;
   }
 
   if (!rutas_privadas.has(pathname)) return null;
@@ -102,7 +121,6 @@ export default function App() {
     case "/admin": pagina = <PaginaAdministracion />; break;
     case "/admin-tickets": pagina = <PaginaSoporteAdmin />; break;
     case "/dashboard": pagina = es_admin ? <PaginaAdministracion /> : (es_inversionista ? <PaginaDashboardInversionista /> : <PaginaDashboard />); break;
-    case "/proyectos": pagina = es_inversionista ? <PaginaProyectosInversionista /> : <PaginaProyectos />; break;
     case "/solicitudes": pagina = es_inversionista ? <PaginaSolicitudesInversionista /> : <PaginaMisSolicitudes />; break;
     case "/mensajes": pagina = <PaginaMensajes />; break;
     case "/explorar-usuarios": pagina = <PaginaExplorarUsuarios />; break;

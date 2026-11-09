@@ -15,6 +15,14 @@ export function obtener_headers_autorizados() {
   };
 }
 
+async function leer_respuesta_backend(respuesta, mensaje_predeterminado) {
+  const datos = await respuesta.json().catch(() => ({}));
+  if (!respuesta.ok) {
+    throw new Error(datos?.error?.message || datos?.mensaje || mensaje_predeterminado);
+  }
+  return datos?.data ?? datos;
+}
+
 export async function obtener_usuario_por_id_api(usuario_id) {
   const respuesta = await fetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
     method: "GET",
@@ -87,25 +95,25 @@ export async function listar_usuarios_api(usuario_id_excluir) {
 }
 
 export async function registrar_usuario_api(datos_registro) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/register`, {
+  const respuesta = await fetch(`${API_BASE_URL}/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(datos_registro),
+    body: JSON.stringify({
+      name: datos_registro.name || datos_registro.nombre || datos_registro.nombre_usuario,
+      email: datos_registro.email,
+      password: datos_registro.password,
+      role: datos_registro.tipo_usuario === "emprendedor" ? "OWNER" : "USER",
+    }),
   });
 
-  const datos = await respuesta.json().catch(() => ({}));
-
-  if (!respuesta.ok || !datos.ok) {
-    throw new Error(datos.mensaje || "No fue posible registrar el usuario");
-  }
-
-  return datos;
+  const datos = await leer_respuesta_backend(respuesta, "No fue posible registrar el usuario");
+  return { usuario: datos.user, token: datos.token, mensaje: "Registro exitoso" };
 }
 
 export async function login_usuario_api({ email, password, tipo_usuario }) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+  const respuesta = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -113,17 +121,11 @@ export async function login_usuario_api({ email, password, tipo_usuario }) {
     body: JSON.stringify({
       email,
       password,
-      tipo_usuario,
     }),
   });
 
-  const datos = await respuesta.json().catch(() => ({}));
-
-  if (!respuesta.ok || !datos.ok) {
-    throw new Error(datos.mensaje || "No fue posible iniciar sesión");
-  }
-
-  return datos;
+  const datos = await leer_respuesta_backend(respuesta, "No fue posible iniciar sesión");
+  return { usuario: datos.user, token: datos.token, mensaje: "Sesión iniciada", tipo_usuario };
 }
 
 export async function enviar_mensaje_chat_api(datos_mensaje) {

@@ -1,7 +1,6 @@
 // App.js — Punto de entrada principal de la aplicación Ambriosa
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { ProveedorApp, useContextoApp } from "./context/contexto_app";
 import LayoutPrincipal from "./components/layout/LayoutPrincipal";
 import NotificacionesGlobales from "./components/NotificacionesGlobales";
@@ -38,6 +37,13 @@ import "./estilos_globales.css";
 function ContenidoApp() {
   const { esta_autenticado, datos_usuario } = useContextoApp();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const manejar_sesion_expirada = () => navigate("/login", { replace: true });
+    window.addEventListener("olympo:session-expired", manejar_sesion_expirada);
+    return () => window.removeEventListener("olympo:session-expired", manejar_sesion_expirada);
+  }, [navigate]);
 
   useEffect(() => {
     document.body.classList.toggle("pagina-admin-activa", location.pathname.startsWith("/admin"));
@@ -48,7 +54,8 @@ function ContenidoApp() {
       <>
         <TraductorGlobal />
         <Routes>
-          <Route path="*" element={<PaginaLogin />} />
+          <Route path="/login" element={<PaginaLogin />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </>
     );
@@ -65,6 +72,7 @@ function ContenidoApp() {
       <NotificacionesGlobales />
       <LayoutPrincipal>
         <Routes>
+          <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Navigate to={esAdmin ? "/admin" : "/dashboard"} replace />} />
           <Route path="/admin" element={esAdmin ? <PaginaAdministracion /> : <Navigate to="/dashboard" replace />} />
           <Route path="/admin-tickets" element={esAdmin ? <PaginaSoporteAdmin /> : <Navigate to="/dashboard" replace />} />

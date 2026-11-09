@@ -4,3 +4,16 @@
 
 body { margin: 0; }
 
+/* El marketplace usa páginas completas y necesita scroll vertical también en móvil. */
+html:has(.landing),
+html:has(.project-list),
+html:has(.project-detail),
+body:has(.landing),
+body:has(.project-list),
+body:has(.project-detail) {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+

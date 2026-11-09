@@ -89,8 +89,9 @@ test.describe("Frontend: vistas y experiencia", () => {
     await expect(page.getByLabel("Buscar proyectos")).toBeVisible();
     await expect(page.getByRole("combobox", { name: "Categoría" })).toBeVisible();
     await expect(page.getByRole("heading", { name: originalProject.title })).toBeVisible();
-    const sizes = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, page: document.documentElement.scrollWidth }));
+    const sizes = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, page: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight, viewportHeight: window.innerHeight }));
     expect(sizes.page).toBeLessThanOrEqual(sizes.viewport);
+    expect(sizes.scrollHeight).toBeGreaterThan(sizes.viewportHeight);
   });
 
   test("crear proyecto permite cargar una imagen como archivo", async ({ page }) => {
@@ -98,6 +99,7 @@ test.describe("Frontend: vistas y experiencia", () => {
     const requests = await mockMarketplace(page);
     await page.goto(`${baseURL}/proyectos`);
     await page.getByRole("button", { name: "Crear proyecto" }).click();
+    await expect(page.getByRole("dialog").getByText("Seleccionar imagen")).toBeVisible();
     await page.getByLabel("Nombre del proyecto").fill("Biblioteca digital rural");
     await page.getByLabel("Descripción").fill("Conectamos bibliotecas comunitarias rurales con recursos educativos digitales.");
     await page.getByRole("dialog").getByLabel("Categoría").selectOption(category.id);

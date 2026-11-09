@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { listar_solicitudes_por_inversionista_api } from "../services/solicitudes_api";
 import { API_BASE_URL } from "../services/api_config";
+import { apiFetch } from "../services/api_client";
 import "./PaginaDashboard.css";
 import "./Paginadashboardinversionista.css";
 import "./PaginaMisSolicitudes.css";
@@ -156,7 +157,7 @@ export default function PaginaDashboardInversionista() {
       // Si tenemos un usuario_id pero no un firebase_uid, intentar resolver el firebase_uid
       if (contactId && !solicitud.emprendedor_firebase_uid && solicitud.emprendedor_usuario_id) {
         try {
-          const resUsuario = await fetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(solicitud.emprendedor_usuario_id)}`);
+          const resUsuario = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(solicitud.emprendedor_usuario_id)}`);
           const datosUsuario = await resUsuario.json().catch(() => ({}));
           if (resUsuario.ok && datosUsuario?.ok && datosUsuario?.usuario?.firebase_uid) {
             contactId = datosUsuario.usuario.firebase_uid;
@@ -169,7 +170,7 @@ export default function PaginaDashboardInversionista() {
 
       if (!contactId) {
         // Último recurso: obtener propietario del proyecto desde la API de proyectos
-        const res = await fetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
+        const res = await apiFetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
         const pj = await res.json().catch(() => ({}));
         console.debug('[PaginaDashboardInversionista] proyecto fetch result:', { status: res.status, ok: res.ok, body: pj });
         if (res.ok && pj && pj.ok && pj.proyecto) {
@@ -177,7 +178,7 @@ export default function PaginaDashboardInversionista() {
           if (propietarioId) {
             // Intentar resolver firebase_uid del propietario
             try {
-              const resOwner = await fetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(propietarioId)}`);
+              const resOwner = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(propietarioId)}`);
               const datosOwner = await resOwner.json().catch(() => ({}));
               if (resOwner.ok && datosOwner?.ok && datosOwner?.usuario?.firebase_uid) {
                 contactId = datosOwner.usuario.firebase_uid;
@@ -229,7 +230,7 @@ export default function PaginaDashboardInversionista() {
     setCargandoDetalle(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
+      const res = await apiFetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
       const datos = await res.json().catch(() => ({}));
       if (res.ok && datos?.ok && datos?.proyecto) {
         setProyectoDetalle(datos.proyecto);

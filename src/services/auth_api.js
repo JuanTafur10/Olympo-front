@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 
 let token_sesion_actual = null;
 
@@ -15,6 +16,14 @@ export function obtener_headers_autorizados() {
   };
 }
 
+export async function obtener_usuario_actual_api() {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/users/me`, {
+    method: "GET",
+    headers: obtener_headers_autorizados(),
+  });
+  return leer_respuesta_backend(respuesta, "No fue posible recuperar la sesión");
+}
+
 async function leer_respuesta_backend(respuesta, mensaje_predeterminado) {
   const datos = await respuesta.json().catch(() => ({}));
   if (!respuesta.ok) {
@@ -24,7 +33,7 @@ async function leer_respuesta_backend(respuesta, mensaje_predeterminado) {
 }
 
 export async function obtener_usuario_por_id_api(usuario_id) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +50,7 @@ export async function obtener_usuario_por_id_api(usuario_id) {
 }
 
 export async function actualizar_usuario_api(usuario_id, datos_perfil) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -62,7 +71,7 @@ export async function actualizar_foto_perfil_api(usuario_id, archivo) {
   const formData = new FormData();
   formData.append("file", archivo);
 
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}/foto`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}/foto`, {
     method: "POST",
     body: formData,
   });
@@ -78,7 +87,7 @@ export async function actualizar_foto_perfil_api(usuario_id, archivo) {
 
 export async function listar_usuarios_api(usuario_id_excluir) {
   const query = usuario_id_excluir ? `?excluir_usuario_id=${encodeURIComponent(usuario_id_excluir)}` : "";
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/usuarios${query}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios${query}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -95,7 +104,7 @@ export async function listar_usuarios_api(usuario_id_excluir) {
 }
 
 export async function registrar_usuario_api(datos_registro) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/auth/register`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -113,7 +122,7 @@ export async function registrar_usuario_api(datos_registro) {
 }
 
 export async function login_usuario_api({ email, password, tipo_usuario }) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/auth/login`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -129,7 +138,7 @@ export async function login_usuario_api({ email, password, tipo_usuario }) {
 }
 
 export async function enviar_mensaje_chat_api(datos_mensaje) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chat/mensaje`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chat/mensaje`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -157,7 +166,7 @@ export async function enviar_mensaje_chat_api(datos_mensaje) {
 }
 
 export async function marcar_mensajes_leidos_api({ chat_id, receiver_id }) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chat/leidos`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chat/leidos`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -176,7 +185,7 @@ export async function marcar_mensajes_leidos_api({ chat_id, receiver_id }) {
 
 export async function listar_usuarios_admin_api(usuario_id_excluir) {
   const query = usuario_id_excluir ? `?excluir_usuario_id=${encodeURIComponent(usuario_id_excluir)}` : "";
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/usuarios${query}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/usuarios${query}`, {
     method: "GET",
     headers: obtener_headers_autorizados(),
   });
@@ -191,7 +200,7 @@ export async function listar_usuarios_admin_api(usuario_id_excluir) {
 }
 
 export async function crear_admin_api(datos_admin) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/usuarios/admin`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/usuarios/admin`, {
     method: "POST",
     headers: obtener_headers_autorizados(),
     body: JSON.stringify(datos_admin),
@@ -207,7 +216,7 @@ export async function crear_admin_api(datos_admin) {
 }
 
 export async function obtener_config_registro_libre_api() {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/config/registro-libre`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/config/registro-libre`, {
     method: "GET",
     headers: obtener_headers_autorizados(),
   });
@@ -222,7 +231,7 @@ export async function obtener_config_registro_libre_api() {
 }
 
 export async function actualizar_config_registro_libre_api(registro_libre) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/config/registro-libre`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/config/registro-libre`, {
     method: "PATCH",
     headers: obtener_headers_autorizados(),
     body: JSON.stringify({ registro_libre }),
@@ -238,7 +247,7 @@ export async function actualizar_config_registro_libre_api(registro_libre) {
 }
 
 export async function actualizar_estado_usuario_admin_api(usuario_id, activo) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/usuarios/${usuario_id}/estado`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/usuarios/${usuario_id}/estado`, {
     method: "PATCH",
     headers: obtener_headers_autorizados(),
     body: JSON.stringify({ activo }),
@@ -254,7 +263,7 @@ export async function actualizar_estado_usuario_admin_api(usuario_id, activo) {
 }
 
 export async function rechazar_registro_usuario_admin_api(usuario_id) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/usuarios/${usuario_id}/rechazar-registro`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/usuarios/${usuario_id}/rechazar-registro`, {
     method: "DELETE",
     headers: obtener_headers_autorizados(),
   });
@@ -269,7 +278,7 @@ export async function rechazar_registro_usuario_admin_api(usuario_id) {
 }
 
 export async function listar_todos_los_usuarios_admin_api() {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/usuarios`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/usuarios`, {
     method: "GET",
     headers: obtener_headers_autorizados(),
   });

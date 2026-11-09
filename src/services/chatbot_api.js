@@ -1,7 +1,8 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 
 export async function enviar_mensaje_chatbot(mensaje, usuario_id = null) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chatbot/mensaje`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chatbot/mensaje`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export async function enviar_mensaje_chatbot(mensaje, usuario_id = null) {
 }
 
 export async function obtener_historial_chatbot(usuario_id, limit = 200) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chatbot/history?usuario_id=${usuario_id}&limit=${limit}`);
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chatbot/history?usuario_id=${usuario_id}&limit=${limit}`);
   const datos = await respuesta.json().catch(() => ({}));
 
   if (!respuesta.ok || !datos.ok) {
@@ -33,7 +34,7 @@ export async function obtener_historial_chatbot(usuario_id, limit = 200) {
 }
 
 export async function obtener_riesgos_detectados_ares(proyecto_id, usuario_id) {
-  const respuesta = await fetch(
+  const respuesta = await apiFetch(
     `${API_BASE_URL}/api/v1/chatbot/ares/riesgos-detectados/${proyecto_id}?usuario_id=${encodeURIComponent(usuario_id)}`
   );
   const datos = await respuesta.json().catch(() => ({}));
@@ -51,7 +52,7 @@ export async function obtener_riesgos_ares(proyecto_id, usuario_id) {
 
 export async function detectar_riesgos_ares(proyecto_id, usuario_id = null) {
   const query = usuario_id ? `?usuario_id=${encodeURIComponent(usuario_id)}` : "";
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chatbot/ares/detectar-riesgos/${proyecto_id}${query}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chatbot/ares/detectar-riesgos/${proyecto_id}${query}`, {
     method: "POST",
   });
 
@@ -65,7 +66,7 @@ export async function detectar_riesgos_ares(proyecto_id, usuario_id = null) {
 }
 
 export async function listar_riesgos_personalizados_ares(proyecto_id, usuario_id) {
-  const respuesta = await fetch(
+  const respuesta = await apiFetch(
     `${API_BASE_URL}/api/v1/chatbot/ares/riesgos-personalizados/${proyecto_id}?usuario_id=${encodeURIComponent(usuario_id)}`
   );
   const datos = await respuesta.json().catch(() => ({}));
@@ -78,7 +79,7 @@ export async function listar_riesgos_personalizados_ares(proyecto_id, usuario_id
 }
 
 export async function crear_riesgo_personalizado_ares(payload) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/chatbot/ares/riesgos-personalizados`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/chatbot/ares/riesgos-personalizados`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -110,7 +111,7 @@ export async function eliminar_riesgo_personalizado_ares(riesgo_id, usuario_id, 
     if (riesgo.descripcion) query.set("descripcion", riesgo.descripcion);
   }
 
-  const respuesta = await fetch(
+  const respuesta = await apiFetch(
     `${API_BASE_URL}/api/v1/chatbot/ares/riesgos-personalizados/${encodeURIComponent(riesgo_id)}?${query.toString()}`,
     {
       method: "DELETE",

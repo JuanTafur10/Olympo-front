@@ -1,10 +1,11 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 
 // Función de prueba para verificar si PATCH funciona
 export async function test_patch_api() {
   console.log(`[DEBUG] Probando PATCH en: ${API_BASE_URL}/api/v1/test-patch`);
   try {
-    const respuesta = await fetch(`${API_BASE_URL}/api/v1/test-patch`, {
+    const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/test-patch`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export async function test_patch_api() {
 export async function listar_solicitudes_por_proyecto_api(proyecto_id) {
   if (!proyecto_id) return [];
 
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/solicitudes/proyecto/${encodeURIComponent(proyecto_id)}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/solicitudes/proyecto/${encodeURIComponent(proyecto_id)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +47,7 @@ export async function listar_solicitudes_por_proyecto_api(proyecto_id) {
 export async function listar_solicitudes_por_inversionista_api(inversionista_id) {
   if (!inversionista_id) return [];
 
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/solicitudes/inversionista/${encodeURIComponent(inversionista_id)}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/solicitudes/inversionista/${encodeURIComponent(inversionista_id)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -68,7 +69,7 @@ export async function listar_solicitudes_por_inversionista_api(inversionista_id)
 }
 
 export async function crear_solicitud_api(datos_solicitud) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/solicitudes`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/solicitudes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +91,7 @@ export async function actualizar_estado_solicitud_api(solicitud_id, nuevo_estado
   console.log(`[DEBUG] Llamando PATCH a: ${url}`);
   console.log(`[DEBUG] Payload: {estado: "${nuevo_estado}"}`);
   
-  const respuesta = await fetch(url, {
+  const respuesta = await apiFetch(url, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

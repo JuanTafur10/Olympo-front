@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 
 const normalizarFecha = (valor) => {
   if (!valor) return 0;
@@ -8,7 +9,7 @@ const normalizarFecha = (valor) => {
 
 const pedirNotificaciones = async (userId) => {
   console.debug("[Notificaciones API] Solicitando notificaciones para usuario:", userId);
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/notificaciones?usuario_id=${encodeURIComponent(userId)}`);
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/notificaciones?usuario_id=${encodeURIComponent(userId)}`);
   const datos = await respuesta.json().catch(() => ({}));
 
   console.debug("[Notificaciones API] Status:", respuesta.status, "Datos:", datos);
@@ -52,7 +53,7 @@ export const escucharNotificacionesUsuario = ({ userId }, onCambio) => {
 };
 
 export const marcarNotificacionLeida = async ({ notificationId }) => {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/notificaciones/${encodeURIComponent(notificationId)}/leida`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/notificaciones/${encodeURIComponent(notificationId)}/leida`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
   });
@@ -65,7 +66,7 @@ export const marcarNotificacionLeida = async ({ notificationId }) => {
 };
 
 export const marcarTodasNotificacionesLeidas = async ({ userId }) => {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/notificaciones/leidas`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/notificaciones/leidas`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -81,7 +82,7 @@ export const marcarTodasNotificacionesLeidas = async ({ userId }) => {
 };
 
 export const eliminarNotificacion = async ({ notificationId }) => {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/notificaciones/${encodeURIComponent(notificationId)}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/notificaciones/${encodeURIComponent(notificationId)}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });

@@ -4,6 +4,7 @@ import { useContextoApp } from "../context/contexto_app";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { listar_solicitudes_por_proyecto_api, actualizar_estado_solicitud_api, test_patch_api } from "../services/solicitudes_api";
 import { API_BASE_URL } from "../services/api_config.js";
+import { apiFetch } from "../services/api_client.js";
 import {
   ChevronDown,
   ChevronUp,
@@ -53,7 +54,7 @@ export default function PaginaMisSolicitudes() {
           if (cacheLocal[usuarioId]) return cacheLocal[usuarioId];
 
           try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(usuarioId)}`);
+            const res = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(usuarioId)}`);
             const datos = await res.json().catch(() => ({}));
             if (res.ok && datos?.ok && datos?.usuario) {
               cacheLocal[usuarioId] = datos.usuario;
@@ -161,7 +162,7 @@ export default function PaginaMisSolicitudes() {
     try {
       if (contactId && !solicitud.inversionista_firebase_uid && solicitud.inversionista_usuario_id) {
         try {
-          const resUsuario = await fetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(solicitud.inversionista_usuario_id)}`);
+        const resUsuario = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(solicitud.inversionista_usuario_id)}`);
           const datosUsuario = await resUsuario.json().catch(() => ({}));
           if (resUsuario.ok && datosUsuario?.ok && datosUsuario?.usuario?.firebase_uid) {
             contactId = datosUsuario.usuario.firebase_uid;
@@ -172,13 +173,13 @@ export default function PaginaMisSolicitudes() {
       }
 
       if (!contactId && solicitud.proyecto_id) {
-        const res = await fetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
+        const res = await apiFetch(`${API_BASE_URL}/api/v1/proyectos/${encodeURIComponent(solicitud.proyecto_id)}`);
         const pj = await res.json().catch(() => ({}));
         if (res.ok && pj?.ok && pj?.proyecto) {
           const propietarioId = pj.proyecto.propietario_id || pj.proyecto.propietarioId || null;
           if (propietarioId) {
             try {
-              const resOwner = await fetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(propietarioId)}`);
+              const resOwner = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${encodeURIComponent(propietarioId)}`);
               const datosOwner = await resOwner.json().catch(() => ({}));
               contactId = resOwner.ok && datosOwner?.ok && datosOwner?.usuario?.firebase_uid ? datosOwner.usuario.firebase_uid : propietarioId;
             } catch (e) {

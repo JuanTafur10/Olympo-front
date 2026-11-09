@@ -1,12 +1,20 @@
 // contexto_app.js — Estado global de la aplicación Ambriosa
 import { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
 import { usuario_actual } from "../data/datos_mock";
-import { actualizar_foto_perfil_api, actualizar_usuario_api, establecer_token_sesion, login_usuario_api, obtener_usuario_por_id_api, registrar_usuario_api } from "../services/auth_api";
+import { actualizar_foto_perfil_api, actualizar_usuario_api, establecer_token_sesion, login_usuario_api, obtener_usuario_actual_api, registrar_usuario_api } from "../services/auth_api";
 import { enviar_mensaje_chatbot, obtener_historial_chatbot } from "../services/chatbot_api";
 import { cerrarSesionFirebaseCliente, iniciarSesionFirebaseCliente, escucharChatsUsuario, suscribirseAuthFirebaseCliente, escucharContadorMensajesNoLeidos } from "../services/chat_firebase";
 import { escucharNotificacionesUsuario } from "../services/notificaciones_firebase";
 
 const ContextoApp = createContext(null);
+
+const normalizar_tipo_usuario = (rol) => {
+  const rol_normalizado = String(rol ?? "").toUpperCase();
+  if (rol_normalizado === "OWNER") return "emprendedor";
+  if (rol_normalizado === "USER") return "inversionista";
+  if (rol_normalizado === "ADMIN") return "admin";
+  return rol;
+};
 
 const normalizar_usuario = (usuario = {}) => ({
   ...usuario_actual,
@@ -14,9 +22,9 @@ const normalizar_usuario = (usuario = {}) => ({
   id: usuario.id ?? usuario.id_usuario,
   nombre_usuario: usuario.nombre_usuario ?? usuario.nombre ?? usuario_actual.nombre_usuario,
   email_usuario: usuario.email_usuario ?? usuario.email,
-  tipo_usuario: usuario.tipo_usuario ?? usuario.rol ?? usuario_actual.tipo_usuario,
-  es_admin: typeof usuario.es_admin === "boolean" ? usuario.es_admin : String(usuario.tipo_usuario ?? usuario.rol ?? "").toLowerCase() === "admin",
-  esta_activo: typeof usuario.activo === "boolean" ? usuario.activo : usuario_actual.esta_activo,
+  tipo_usuario: normalizar_tipo_usuario(usuario.tipo_usuario ?? usuario.role ?? usuario.rol) ?? usuario_actual.tipo_usuario,
+  es_admin: typeof usuario.es_admin === "boolean" ? usuario.es_admin : String(usuario.role ?? usuario.tipo_usuario ?? usuario.rol ?? "").toUpperCase() === "ADMIN",
+  esta_activo: typeof usuario.activo === "boolean" ? usuario.activo : usuario.status ? usuario.status === "ACTIVE" : usuario_actual.esta_activo,
   pendiente_aprobacion: typeof usuario.pendiente_aprobacion === "boolean" ? usuario.pendiente_aprobacion : false,
   descripcion_usuario:
     usuario.descripcion_usuario ??
@@ -420,28 +428,7 @@ export function ProveedorApp({ children }) {
 
     const cargar_usuario_db = async () => {
       try {
-        // Intentar obtener userId desde el estado primero
-        let usuario_id = datos_usuario?.id;
-
-        // Si no existe, intentar decodificar el token JWT guardado
-        if (!usuario_id) {
-          try {
-            const token = localStorage.getItem("olympo_token");
-            if (token) {
-              const partes = token.split(".");
-              if (partes.length >= 2) {
-                const payload = JSON.parse(atob(partes[1].replace(/-/g, "+").replace(/_/g, "/")));
-                usuario_id = payload?.sub || payload?.id || payload?.userId || payload?.usuario_id || payload?.uid || null;
-              }
-            }
-          } catch (_) {
-            usuario_id = null;
-          }
-        }
-
-        if (!usuario_id) return;
-
-        const usuario_db = await obtener_usuario_por_id_api(usuario_id);
+        const usuario_db = await obtener_usuario_actual_api();
         const usuario_normalizado = normalizar_usuario(usuario_db);
 
         if (!activo) return;
@@ -469,21 +456,22 @@ export function ProveedorApp({ children }) {
         tipo_usuario,
       });
 
-      const usuario_backend = respuesta_login.usuario || {};
+      const usuario_backend = respuesta_login.usuario;
+      if (!usuario_backend || !respuesta_login.token) {
+        throw new Error("La API no devolvió un usuario y token válidos.");
+      }
+      const rol_backend = usuario_backend.role || usuario_backend.rol || tipo_usuario;
       const datos_usuario_sesion = normalizar_usuario({
         ...usuario_backend,
         email,
-        tipo_usuario: usuario_backend.rol || tipo_usuario,
-        es_admin: Boolean(respuesta_login.es_admin ?? String(usuario_backend.rol || tipo_usuario).toLowerCase() === "admin"),
+        tipo_usuario: rol_backend,
+        es_admin: Boolean(respuesta_login.es_admin ?? String(rol_backend).toUpperCase() === "ADMIN"),
       });
 
+      localStorage.setItem("olympo_token", respuesta_login.token);
+      establecer_token_sesion(respuesta_login.token);
       set_datos_usuario(datos_usuario_sesion);
       set_esta_autenticado(true);
-
-      if (respuesta_login.token) {
-        localStorage.setItem("olympo_token", respuesta_login.token);
-        establecer_token_sesion(respuesta_login.token);
-      }
 
       try {
         await iniciarSesionFirebaseCliente(email, contrasena);
@@ -546,14 +534,19 @@ export function ProveedorApp({ children }) {
     }
   };
 
-  const cerrar_sesion = () => {
+  const cerrar_sesion = useCallback(() => {
     cerrarSesionFirebaseCliente().catch(() => {});
     set_esta_autenticado(false);
     localStorage.removeItem("olympo_token");
     establecer_token_sesion(null);
     localStorage.removeItem("olympo_usuario");
     set_datos_usuario(normalizar_usuario(usuario_actual));
-  };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("olympo:session-expired", cerrar_sesion);
+    return () => window.removeEventListener("olympo:session-expired", cerrar_sesion);
+  }, [cerrar_sesion]);
 
   const actualizar_perfil_usuario = async (datos_perfil) => {
     const usuario_id = datos_usuario.id;

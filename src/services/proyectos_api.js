@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 
 export async function listar_proyectos_api(propietario_id, propietario_email, inversionista_id) {
   const params = new URLSearchParams();
@@ -6,7 +7,7 @@ export async function listar_proyectos_api(propietario_id, propietario_email, in
   if (propietario_email) params.set("propietario_email", propietario_email);
   if (inversionista_id) params.set("inversionista_id", inversionista_id);
   const query = params.toString() ? `?${params.toString()}` : "";
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/proyectos${query}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/proyectos${query}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export async function listar_proyectos_api(propietario_id, propietario_email, in
 }
 
 export async function crear_proyecto_api(payload) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/proyectos`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/proyectos`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export async function crear_proyecto_api(payload) {
 }
 
 export async function obtener_proyecto_api(proyecto_id) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/proyectos/${proyecto_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/proyectos/${proyecto_id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export async function obtener_proyecto_api(proyecto_id) {
 }
 
 export async function actualizar_proyecto_api(proyecto_id, payload) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/proyectos/${proyecto_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/proyectos/${proyecto_id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -76,7 +77,7 @@ export async function actualizar_proyecto_api(proyecto_id, payload) {
 }
 
 export async function optimizar_descripcion_ia_api(titulo, descripcion) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/ia/optimizar`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/ia/optimizar`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

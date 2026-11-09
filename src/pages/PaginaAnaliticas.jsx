@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, PieChart, Pie, Cell, Legend } from "recharts";
 import { useContextoApp } from "../context/contexto_app";
 import { API_BASE_URL } from "../services/api_config";
+import { apiFetch } from "../services/api_client";
 import "./PaginaAnaliticas.css";
 
 const COLORS_ESTADO = ["#1d86ee", "#34d399", "#f97316", "#94a3b8"];
@@ -25,7 +26,7 @@ export default function PaginaAnaliticas() {
           return;
         }
 
-        const resp = await fetch(`${API_BASE_URL}/api/v1/analytics/proyectos?propietario_id=${propietario_id}`);
+        const resp = await apiFetch(`${API_BASE_URL}/api/v1/analytics/proyectos?propietario_id=${propietario_id}`);
         const body = await resp.json();
         if (!body.ok) {
           throw new Error(body.mensaje || "Error al obtener analíticas");

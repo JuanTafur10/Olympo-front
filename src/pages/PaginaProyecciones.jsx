@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { TrendingUp, PencilLine } from "lucide-react";
 import { API_BASE_URL } from "../services/api_config";
+import { apiFetch } from "../services/api_client";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { useContextoApp } from "../context/contexto_app";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +54,7 @@ export default function PaginaProyecciones() {
     setCargandoProyeccion(true);
     try {
       const url = `${API_BASE_URL}/api/v1/analytics/proyeccion?proyecto_id=${encodeURIComponent(proyectoId)}&include_mensajes=true`;
-      const resp = await fetch(url);
+      const resp = await apiFetch(url);
       const js = await resp.json().catch(() => ({}));
       if (!resp.ok || !js.ok) {
         setProyeccionData(null);

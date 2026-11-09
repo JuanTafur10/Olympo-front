@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./api_config.js";
+import { apiFetch } from "./api_client.js";
 import { obtener_headers_autorizados } from "./auth_api.js";
 
 /**
@@ -6,7 +7,7 @@ import { obtener_headers_autorizados } from "./auth_api.js";
  * @param {Object} datos_ticket
  */
 export async function crear_ticket_api(datos_ticket) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/tickets`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/tickets`, {
     method: "POST",
     headers: obtener_headers_autorizados(),
     body: JSON.stringify(datos_ticket),
@@ -25,7 +26,7 @@ export async function crear_ticket_api(datos_ticket) {
  * Obtiene la lista de tickets creados por el usuario actual.
  */
 export async function listar_mis_tickets_api() {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/tickets`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/tickets`, {
     method: "GET",
     headers: obtener_headers_autorizados(),
   });
@@ -53,7 +54,7 @@ export async function admin_listar_tickets_api(filtros = {}) {
 
   const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
 
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/tickets${queryString}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/tickets${queryString}`, {
     method: "GET",
     headers: obtener_headers_autorizados(),
   });
@@ -73,7 +74,7 @@ export async function admin_listar_tickets_api(filtros = {}) {
  * @param {Object} datos_actualizados { prioridad, estado, asignado_a, notas_internas }
  */
 export async function admin_actualizar_ticket_api(ticket_id, datos_actualizados) {
-  const respuesta = await fetch(`${API_BASE_URL}/api/v1/admin/tickets/${encodeURIComponent(ticket_id)}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/admin/tickets/${encodeURIComponent(ticket_id)}`, {
     method: "PATCH",
     headers: obtener_headers_autorizados(),
     body: JSON.stringify(datos_actualizados),

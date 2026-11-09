@@ -197,7 +197,7 @@ export default function MiDashboard() {
 
 **1. Revisa el CSS actual:**
 ```bash
-# Abre frontend/src/pages/PaginaProyectos.css
+# Abre frontend/src/views/PaginaProyectos.css
 # Busca display: grid, width: px, margin: px
 ```
 

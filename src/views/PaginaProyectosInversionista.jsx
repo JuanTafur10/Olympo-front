@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { MessageSquare, ShieldAlert, X, AlertTriangle, Zap, ShieldCheck, ChevronDown, ChevronUp, BarChart3 } from "lucide-react";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { obtener_usuario_por_id_api } from "../services/auth_api";
 import { crear_solicitud_api } from "../services/solicitudes_api";

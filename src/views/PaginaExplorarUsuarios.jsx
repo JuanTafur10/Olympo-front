@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { listar_usuarios_api, obtener_usuario_por_id_api } from "../services/auth_api";
 import "./PaginaExplorarUsuarios.css";
 

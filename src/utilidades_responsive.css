@@ -372,7 +372,7 @@ input:focus, textarea:focus, select:focus {
    ANIMACIONES RESPONSIVAS
 ───────────────────────────────────────────────── */
 
-@prefers-reduced-motion: reduce {
+@media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

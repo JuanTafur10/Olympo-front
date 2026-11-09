@@ -4,7 +4,7 @@ import { useContextoApp } from "../context/contexto_app";
 import { API_BASE_URL } from "../services/api_config";
 import { apiFetch } from "../services/api_client";
 import { listar_solicitudes_por_inversionista_api } from "../services/solicitudes_api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { 
   FileText, MessageSquare, User, Mail, Phone,
   ExternalLink, Printer, CheckCircle, TrendingUp,

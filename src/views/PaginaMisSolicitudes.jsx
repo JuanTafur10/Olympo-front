@@ -19,7 +19,7 @@ import {
   User,
   ExternalLink,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import "./PaginaMisSolicitudes.css";
 
 export default function PaginaMisSolicitudes() {

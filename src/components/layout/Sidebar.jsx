@@ -15,7 +15,8 @@ import {
   Users,
   Ticket,
 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "../../hooks/useNavigate";
+import { usePathname } from "next/navigation";
 import { useContextoApp } from "../../context/contexto_app";
 import logo from "../../image.png";
 import "./Sidebar.css";
@@ -56,7 +57,7 @@ const elementos_menu_inferior = [
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const pathname = usePathname();
   const {
     cerrar_sesion,
     cerrar_sidebar,
@@ -78,7 +79,7 @@ export default function Sidebar() {
     : elementos_menu_principal_emprendedor;
 
   const _renderizar_item = ({ id, etiqueta, Icono }) => {
-    const es_activo = location.pathname === "/" + id;
+    const es_activo = pathname === "/" + id;
     return (
       <li
         key={id}
@@ -109,7 +110,7 @@ export default function Sidebar() {
       {/* ── Logo ── */}
       <div className="sidebar__logo">
         <div className="sidebar__logo-imagen">
-          <img src={logo} alt="Olympo logo" draggable="false" />
+          <img src={logo.src} alt="Olympo logo" draggable="false" />
         </div>
         <div className="sidebar__logo-texto">
           <span className="sidebar__logo-nombre">AMBROSIA</span>

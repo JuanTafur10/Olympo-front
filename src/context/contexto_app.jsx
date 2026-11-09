@@ -60,30 +60,31 @@ const normalizar_configuracion = (configuracion = {}) => ({
 });
 
 export function ProveedorApp({ children }) {
-  const usuario_guardado = localStorage.getItem("olympo_usuario");
-  const token_guardado = localStorage.getItem("olympo_token");
-  const configuracion_guardada = localStorage.getItem("olympo_configuracion");
-
   // Estado de sesión
-  const [esta_autenticado, set_esta_autenticado] = useState(Boolean(token_guardado));
-  const [sesion_cargando, set_sesion_cargando] = useState(Boolean(token_guardado));
-  const [datos_usuario, set_datos_usuario] = useState(() => {
-    if (!usuario_guardado) return {};
-    try {
-      return normalizar_usuario(JSON.parse(usuario_guardado));
-    } catch (_) {
-      return {};
-    }
-  });
+  const [esta_autenticado, set_esta_autenticado] = useState(false);
+  const [sesion_cargando, set_sesion_cargando] = useState(true);
+  const [sesion_hidratada, set_sesion_hidratada] = useState(false);
+  const [datos_usuario, set_datos_usuario] = useState({});
+  const [configuracion_global, set_configuracion_global] = useState(configuracion_predeterminada);
 
-  const [configuracion_global, set_configuracion_global] = useState(() => {
-    if (!configuracion_guardada) return configuracion_predeterminada;
-    try {
-      return normalizar_configuracion(JSON.parse(configuracion_guardada));
-    } catch (_) {
-      return configuracion_predeterminada;
+  useEffect(() => {
+    const token_guardado = localStorage.getItem("olympo_token");
+    const usuario_guardado = localStorage.getItem("olympo_usuario");
+    const configuracion_guardada = localStorage.getItem("olympo_configuracion");
+
+    establecer_token_sesion(token_guardado);
+    if (usuario_guardado) {
+      try { set_datos_usuario(normalizar_usuario(JSON.parse(usuario_guardado))); } catch (_) {}
     }
-  });
+    if (configuracion_guardada) {
+      try { set_configuracion_global(normalizar_configuracion(JSON.parse(configuracion_guardada))); } catch (_) {}
+    }
+
+    set_esta_autenticado(Boolean(token_guardado));
+    set_sesion_cargando(Boolean(token_guardado));
+    set_sesion_hidratada(true);
+    if (!token_guardado) set_sesion_cargando(false);
+  }, []);
 
   useEffect(() => {
     const tema_aplicado =
@@ -423,6 +424,7 @@ export function ProveedorApp({ children }) {
   }, [esta_autenticado, datos_usuario.firebase_uid, datos_usuario.id, usuario_firebase_actual?.uid, mostrar_notificacion]);
 
   useEffect(() => {
+    if (!sesion_hidratada) return undefined;
     if (!esta_autenticado) return undefined;
 
     let activo = true;
@@ -448,7 +450,7 @@ export function ProveedorApp({ children }) {
     return () => {
       activo = false;
     };
-  }, [esta_autenticado, datos_usuario.id]);
+  }, [esta_autenticado, sesion_hidratada]);
 
   // Inicia sesión contra el backend y actualiza el estado global.
   const iniciar_sesion = async (email, contrasena, tipo_usuario) => {

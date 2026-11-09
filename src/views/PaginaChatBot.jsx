@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
 import { useContextoApp } from "../context/contexto_app";
 import { usuario_actual } from "../data/datos_mock";
-import logoAtenea from "../logoa.avif";
 import "./PaginaChatBot.css";
 
 export default function PaginaChatBot() {
@@ -35,7 +34,7 @@ export default function PaginaChatBot() {
         <div className="chatbot__titulo-bar">
           <div className="chatbot__titulo-izq">
             <img
-              src={logoAtenea}
+              src="/logoa.avif"
               alt="Atenea logo"
               className="chatbot__titulo-logo"
             />
@@ -48,7 +47,7 @@ export default function PaginaChatBot() {
         {/* ── Cabecera del bot ── */}
         <div className="chatbot__subtitulo">
           <div className="chatbot__bot-icono">
-            <img src={logoAtenea} alt="Atenea" />
+            <img src="/logoa.avif" alt="Atenea" />
           </div>
           <div className="chatbot__bot-info">
             <strong>Chat Bot · Atenea</strong>
@@ -67,7 +66,7 @@ export default function PaginaChatBot() {
             >
               {!mensaje.es_del_usuario && (
                 <div className="chatbot__avatar-bot">
-                  <img src={logoAtenea} alt="Atenea" />
+                  <img src="/logoa.avif" alt="Atenea" />
                 </div>
               )}
 

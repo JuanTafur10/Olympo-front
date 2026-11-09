@@ -9,7 +9,7 @@ import {
   MessageSquare, FileText, CheckCircle, Mail, Phone, ExternalLink,
 } from "lucide-react";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { listar_solicitudes_por_inversionista_api } from "../services/solicitudes_api";
 import { API_BASE_URL } from "../services/api_config";

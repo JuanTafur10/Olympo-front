@@ -1,6 +1,6 @@
 // NotificacionesGlobales.jsx — Contenedor global de notificaciones
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import Notificacion from "./Notificacion";
 
 export default function NotificacionesGlobales() {

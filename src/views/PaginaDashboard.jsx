@@ -9,7 +9,7 @@ import {
   Eye, Calendar, Folder, CheckCircle2, Clock3, BarChart3, X,
 } from "lucide-react";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { listar_solicitudes_por_proyecto_api } from "../services/solicitudes_api";
 import "./PaginaDashboard.css";

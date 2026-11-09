@@ -1,6 +1,10 @@
 .git
 node_modules
 build/
+.next/
+.env
+.env.*
+!.env.example
 playwright-report/
 test-results/
 *.log

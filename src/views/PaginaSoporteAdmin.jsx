@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { useContextoApp } from "../context/contexto_app";
 import {
   admin_listar_tickets_api,

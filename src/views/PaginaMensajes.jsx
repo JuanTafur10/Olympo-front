@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { lista_inversionistas, usuario_actual } from "../data/datos_mock";
 import { listar_usuarios_api } from "../services/auth_api";
 import {

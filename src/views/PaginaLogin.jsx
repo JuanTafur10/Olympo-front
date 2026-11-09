@@ -1,15 +1,16 @@
 // PaginaLogin.jsx — Página de inicio de sesión de Olympo
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { usePathname } from "next/navigation";
+import { useNavigate } from "../hooks/useNavigate";
 import { useContextoApp } from "../context/contexto_app";
 import logo from "../image.png";
 import "./PaginaLogin.css";
 
 export default function PaginaLogin() {
   const { iniciar_sesion, registrar_usuario } = useContextoApp();
-  const location = useLocation();
+  const pathname = usePathname() || "/";
   const navigate = useNavigate();
-  const modo_ruta = location.pathname === "/register" ? "register" : "login";
+  const modo_ruta = pathname === "/register" ? "register" : "login";
 
   // Variables de estado del formulario
   const [modo, set_modo] = useState(modo_ruta); // "login" o "register"
@@ -131,7 +132,7 @@ export default function PaginaLogin() {
             {/* Anillo secundario */}
             <div className="login__carga-anillo login__carga-anillo--2" aria-hidden="true" />
             {/* Logo pulsando en el centro */}
-            <img src={logo} alt="" className="login__carga-logo" aria-hidden="true" />
+            <img src={logo.src} alt="" className="login__carga-logo" aria-hidden="true" />
           </div>
 
           {/* Texto de estado */}
@@ -169,7 +170,7 @@ export default function PaginaLogin() {
 
         {/* Logo central */}
         <div className="login__logo-central">
-          <img src={logo} alt="Ambrosia logo" className="login__logo-imagen" />
+          <img src={logo.src} alt="Ambrosia logo" className="login__logo-imagen" />
           <div className="login__logo-textos">
             <span className="login__logo-texto-olympo">AMBROSIA</span>
             <span className="login__logo-texto-eng">ENGINEERING INNOVATION</span>

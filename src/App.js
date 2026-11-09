@@ -1,125 +1,126 @@
-// App.js — Punto de entrada principal de la aplicación Ambriosa
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+"use client";
+
 import { useEffect } from "react";
-import { ProveedorApp, useContextoApp } from "./context/contexto_app";
+import { usePathname, useRouter } from "next/navigation";
+import { useContextoApp } from "./context/contexto_app";
 import LayoutPrincipal from "./components/layout/LayoutPrincipal";
 import NotificacionesGlobales from "./components/NotificacionesGlobales";
 import TraductorGlobal from "./i18n/TraductorGlobal";
-import PaginaLogin from "./pages/PaginaLogin";
-import PaginaNoEncontrada from "./pages/PaginaNoEncontrada";
+import PaginaLogin from "./views/PaginaLogin";
+import PaginaMensajes from "./views/PaginaMensajes";
+import PaginaExplorarUsuarios from "./views/PaginaExplorarUsuarios";
+import PaginaChatBot from "./views/PaginaChatBot";
+import PaginaNotificaciones from "./views/PaginaNotificaciones";
+import PaginaCuenta from "./views/PaginaCuenta";
+import PaginaPerfilContacto from "./views/PaginaPerfilContacto";
+import PaginaConfiguracion from "./views/PaginaConfiguracion";
+import PaginaCallCenter from "./views/PaginaCallCenter";
+import PaginaAdministracion from "./views/PaginaAdministracion";
+import PaginaSoporteAdmin from "./views/PaginaSoporteAdmin";
+import PaginaDashboard from "./views/PaginaDashboard";
+import PaginaProyectos from "./views/PaginaProyectos";
+import PaginaMisSolicitudes from "./views/PaginaMisSolicitudes";
+import PaginaAnaliticas from "./views/PaginaAnaliticas";
+import PaginaProyecciones from "./views/PaginaProyecciones";
+import PaginaRiesgos from "./views/PaginaRiesgos";
+import PaginaDashboardInversionista from "./views/PaginaDashboardInversionista";
+import PaginaProyectosInversionista from "./views/PaginaProyectosInversionista";
+import PaginaSolicitudesInversionista from "./views/PaginaSolicitudesInversionista";
 
-// Páginas comunes
-import PaginaMensajes from "./pages/PaginaMensajes";
-import PaginaExplorarUsuarios from "./pages/PaginaExplorarUsuarios";
-import PaginaChatBot from "./pages/PaginaChatBot";
-import PaginaNotificaciones from "./pages/PaginaNotificaciones";
-import PaginaCuenta from "./pages/PaginaCuenta";
-import PaginaPerfilContacto from "./pages/PaginaPerfilContacto";
-import PaginaConfiguracion from "./pages/PaginaConfiguracion";
-import PaginaCallCenter from "./pages/PaginaCallCenter";
-import PaginaAdministracion from "./pages/PaginaAdministracion";
-import PaginaSoporteAdmin from "./pages/PaginaSoporteAdmin";
+const rutas_privadas = new Set([
+  "/", "/dashboard", "/admin", "/admin-tickets", "/proyectos", "/solicitudes",
+  "/mensajes", "/explorar-usuarios", "/chatbot", "/notificaciones", "/cuenta",
+  "/perfil-contacto", "/configuracion", "/callcenter", "/proyecciones",
+  "/analiticas", "/riesgos",
+]);
 
-// Páginas para emprendedor
-import PaginaDashboard from "./pages/PaginaDashboard";
-import PaginaProyectos from "./pages/PaginaProyectos";
-import PaginaMisSolicitudes from "./pages/PaginaMisSolicitudes";
-import PaginaAnaliticas from "./pages/PaginaAnaliticas";
-import PaginaProyecciones from "./pages/PaginaProyecciones";
-import PaginaRiesgos from "./pages/PaginaRiesgos";
-
-// Páginas para inversionista
-import PaginaDashboardInversionista from "./pages/PaginaDashboardInversionista";
-import PaginaProyectosInversionista from "./pages/PaginaProyectosInversionista";
-import PaginaSolicitudesInversionista from "./pages/PaginaSolicitudesInversionista";
-
-import "./estilos_globales.css";
-
-function RutaDeAcceso() {
-  const { esta_autenticado } = useContextoApp();
-  return esta_autenticado ? <Navigate to="/" replace /> : <PaginaLogin />;
+function esRolAdmin(usuario) {
+  const rol = String(usuario?.role || usuario?.rol || usuario?.tipo_usuario || "").toLowerCase();
+  return Boolean(usuario?.es_admin || rol === "admin");
 }
 
-function RutasPrivadas() {
-  const { esta_autenticado, sesion_cargando } = useContextoApp();
-  const location = useLocation();
+export default function App() {
+  const { esta_autenticado, sesion_cargando, datos_usuario } = useContextoApp();
+  const pathname = usePathname() || "/";
+  const router = useRouter();
+  const es_admin = esRolAdmin(datos_usuario);
+  const rol_usuario = String(datos_usuario?.tipo_usuario || "").toLowerCase();
+  const es_inversionista = rol_usuario.includes("inversionista");
+
+  useEffect(() => {
+    const manejar_sesion_expirada = () => router.replace("/login");
+    window.addEventListener("olympo:session-expired", manejar_sesion_expirada);
+    return () => window.removeEventListener("olympo:session-expired", manejar_sesion_expirada);
+  }, [router]);
+
+  useEffect(() => {
+    document.body.classList.toggle("pagina-admin-activa", pathname.startsWith("/admin"));
+  }, [pathname]);
+
+  useEffect(() => {
+    if (sesion_cargando) return;
+
+    const es_ruta_acceso = pathname === "/login" || pathname === "/register";
+    if (es_ruta_acceso && esta_autenticado) {
+      router.replace(es_admin ? "/admin" : "/dashboard");
+      return;
+    }
+    if (rutas_privadas.has(pathname) && !esta_autenticado) {
+      router.replace("/login");
+      return;
+    }
+    if ((pathname === "/admin" || pathname === "/admin-tickets") && esta_autenticado && !es_admin) {
+      router.replace("/dashboard");
+      return;
+    }
+    if (["/proyecciones", "/analiticas", "/riesgos"].includes(pathname)
+      && esta_autenticado && (es_inversionista || es_admin)) {
+      router.replace("/dashboard");
+      return;
+    }
+    if (pathname === "/" && esta_autenticado) {
+      router.replace(es_admin ? "/admin" : "/dashboard");
+    }
+  }, [esta_autenticado, es_admin, es_inversionista, pathname, router, sesion_cargando]);
 
   if (sesion_cargando) {
     return <div className="app-verificando-sesion" role="status">Verificando tu sesión…</div>;
   }
-  if (!esta_autenticado) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+
+  if (pathname === "/login" || pathname === "/register") {
+    if (esta_autenticado) return null;
+    return <><TraductorGlobal /><PaginaLogin /></>;
   }
 
-  return <><NotificacionesGlobales /><LayoutPrincipal><Outlet /></LayoutPrincipal></>;
-}
+  if (!rutas_privadas.has(pathname)) return null;
+  if (!esta_autenticado) return null;
+  if ((pathname === "/admin" || pathname === "/admin-tickets") && !es_admin) return null;
+  if (pathname === "/") return null;
 
-function SoloAdministracion() {
-  const { datos_usuario } = useContextoApp();
-  const rol = String(datos_usuario?.role || datos_usuario?.rol || datos_usuario?.tipo_usuario || "").toLowerCase();
-  const es_admin = Boolean(datos_usuario?.es_admin || rol === "admin");
-  return es_admin ? <Outlet /> : <Navigate to="/dashboard" replace />;
-}
+  let pagina;
+  switch (pathname) {
+    case "/admin": pagina = <PaginaAdministracion />; break;
+    case "/admin-tickets": pagina = <PaginaSoporteAdmin />; break;
+    case "/dashboard": pagina = es_admin ? <PaginaAdministracion /> : (es_inversionista ? <PaginaDashboardInversionista /> : <PaginaDashboard />); break;
+    case "/proyectos": pagina = es_inversionista ? <PaginaProyectosInversionista /> : <PaginaProyectos />; break;
+    case "/solicitudes": pagina = es_inversionista ? <PaginaSolicitudesInversionista /> : <PaginaMisSolicitudes />; break;
+    case "/mensajes": pagina = <PaginaMensajes />; break;
+    case "/explorar-usuarios": pagina = <PaginaExplorarUsuarios />; break;
+    case "/chatbot": pagina = <PaginaChatBot />; break;
+    case "/notificaciones": pagina = <PaginaNotificaciones />; break;
+    case "/cuenta": pagina = <PaginaCuenta />; break;
+    case "/perfil-contacto": pagina = <PaginaPerfilContacto />; break;
+    case "/configuracion": pagina = <PaginaConfiguracion />; break;
+    case "/callcenter": pagina = <PaginaCallCenter />; break;
+    case "/proyecciones": pagina = es_inversionista || es_admin ? null : <PaginaProyecciones />; break;
+    case "/analiticas": pagina = es_inversionista || es_admin ? null : <PaginaAnaliticas />; break;
+    case "/riesgos": pagina = es_inversionista || es_admin ? null : <PaginaRiesgos />; break;
+    default: pagina = null;
+  }
 
-function ContenidoApp() {
-  const { datos_usuario } = useContextoApp();
-  const location = useLocation();
-  const navigate = useNavigate();
+  if (!pagina) {
+    return null;
+  }
 
-  useEffect(() => {
-    const manejar_sesion_expirada = () => navigate("/login", { replace: true });
-    window.addEventListener("olympo:session-expired", manejar_sesion_expirada);
-    return () => window.removeEventListener("olympo:session-expired", manejar_sesion_expirada);
-  }, [navigate]);
-
-  useEffect(() => {
-    document.body.classList.toggle("pagina-admin-activa", location.pathname.startsWith("/admin"));
-  }, [location.pathname]);
-
-  // Seleccionar mapa según rol
-  const rol_usuario = (datos_usuario?.tipo_usuario || "").toLowerCase();
-  const esAdmin = Boolean(datos_usuario?.es_admin || rol_usuario === "admin");
-  const esInversionista = rol_usuario.includes("inversionista");
-
-  return (
-    <>
-      <TraductorGlobal />
-      <Routes>
-        <Route path="/login" element={<RutaDeAcceso />} />
-        <Route path="/register" element={<RutaDeAcceso />} />
-        <Route element={<RutasPrivadas />}>
-          <Route path="/" element={<Navigate to={esAdmin ? "/admin" : "/dashboard"} replace />} />
-          <Route element={<SoloAdministracion />}>
-            <Route path="/admin" element={<PaginaAdministracion />} />
-            <Route path="/admin-tickets" element={<PaginaSoporteAdmin />} />
-          </Route>
-          <Route path="/dashboard" element={esAdmin ? <PaginaAdministracion /> : (esInversionista ? <PaginaDashboardInversionista /> : <PaginaDashboard />)} />
-          <Route path="/proyectos" element={esInversionista ? <PaginaProyectosInversionista /> : <PaginaProyectos />} />
-          <Route path="/solicitudes" element={esInversionista ? <PaginaSolicitudesInversionista /> : <PaginaMisSolicitudes />} />
-          <Route path="/mensajes" element={<PaginaMensajes />} />
-          <Route path="/explorar-usuarios" element={<PaginaExplorarUsuarios />} />
-          <Route path="/chatbot" element={<PaginaChatBot />} />
-          <Route path="/notificaciones" element={<PaginaNotificaciones />} />
-          <Route path="/cuenta" element={<PaginaCuenta />} />
-          <Route path="/perfil-contacto" element={<PaginaPerfilContacto />} />
-          <Route path="/configuracion" element={<PaginaConfiguracion />} />
-          <Route path="/callcenter" element={<PaginaCallCenter />} />
-          {!esInversionista && <Route path="/proyecciones" element={<PaginaProyecciones />} />}
-          {!esInversionista && <Route path="/analiticas" element={<PaginaAnaliticas />} />}
-          {!esInversionista && !esAdmin && <Route path="/riesgos" element={<PaginaRiesgos />} />}
-        </Route>
-        <Route path="*" element={<PaginaNoEncontrada />} />
-      </Routes>
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <ProveedorApp>
-        <ContenidoApp />
-      </ProveedorApp>
-    </BrowserRouter>
-  );
+  return <><TraductorGlobal /><NotificacionesGlobales /><LayoutPrincipal>{pagina}</LayoutPrincipal></>;
 }

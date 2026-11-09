@@ -4,7 +4,7 @@ import { API_BASE_URL } from "../services/api_config";
 import { apiFetch } from "../services/api_client";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { useContextoApp } from "../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import {
   ResponsiveContainer,
   ComposedChart,

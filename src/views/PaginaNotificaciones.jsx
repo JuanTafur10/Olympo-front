@@ -1,6 +1,6 @@
 // PaginaNotificaciones.jsx — Panel de notificaciones en tiempo real
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { useContextoApp } from "../context/contexto_app";
 import {
   escucharNotificacionesUsuario,

@@ -1,6 +1,6 @@
 // Header.jsx — Encabezado superior de la app Ambriosa
 import { useContextoApp } from "../../context/contexto_app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../../hooks/useNavigate";
 import { Menu, X, Bell } from "lucide-react";
 import "./Header.css";
 

@@ -1,11 +1,39 @@
 import { API_BASE_URL } from "./api_config.js";
 
-export async function apiFetch(input, init = {}) {
-  const url = typeof input === "string" ? input : input.url;
-  const headers = new Headers(init.headers || {});
-  const token = typeof window !== "undefined" ? window.localStorage.getItem("olympo_token") : null;
+function readSessionToken() {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem("olympo_token");
+  } catch {
+    return null;
+  }
+}
 
-  if (token && url.startsWith(API_BASE_URL)) {
+function isBackendRequest(input) {
+  const rawUrl = typeof input === "string" ? input : input.url;
+  const appOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+
+  try {
+    const requestUrl = new URL(rawUrl, appOrigin);
+    if (!requestUrl.pathname.startsWith("/api/")) return false;
+    if (!API_BASE_URL) return requestUrl.origin === appOrigin;
+
+    const backendUrl = new URL(API_BASE_URL, appOrigin);
+    const backendPath = backendUrl.pathname.replace(/\/$/, "");
+    return requestUrl.origin === backendUrl.origin
+      && (backendPath === "" || requestUrl.pathname.startsWith(backendPath));
+  } catch {
+    return false;
+  }
+}
+
+/** Cliente HTTP único del frontend. Adjunta sesión y centraliza el 401. */
+export async function apiFetch(input, init = {}) {
+  const headers = new Headers(input instanceof Request ? input.headers : undefined);
+  new Headers(init.headers || {}).forEach((value, key) => headers.set(key, value));
+
+  const token = readSessionToken();
+  if (token && isBackendRequest(input)) {
     headers.set("Authorization", `Bearer ${token}`);
   }
 

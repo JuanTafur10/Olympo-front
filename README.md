@@ -37,12 +37,10 @@ No incluyas secretos privados en variables `NEXT_PUBLIC_*` ni subas archivos `.e
 
 ## Reparto del trabajo
 
-Completar con los nombres y aportes reales del equipo antes de la entrega.
-
 | Integrante | Aporte en este repositorio |
 | --- | --- |
-| Pendiente de asignar | Pendiente |
-| Pendiente de asignar | Pendiente |
-| Pendiente de asignar | Pendiente |
+| Juan Pablo Tafur | Arquitectura en Next.js App Router, integración de vistas principales y ruteo |
+| David Hernández Mejía | Integración de servicios API, marketplace, carga de imágenes y estilos responsivos |
+| Tomás Granda | Calidad de código: tipado TypeScript de dominio, limpieza de logs de depuración, estandarización de formateo (.prettierrc) y robustez del cliente HTTP |
 
 

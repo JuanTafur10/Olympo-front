@@ -30,7 +30,6 @@ async function leerRespuesta(response, fallback) {
 
 // Función de prueba para verificar si PATCH funciona
 export async function test_patch_api() {
-  console.log(`[DEBUG] Probando PATCH en: ${API_BASE_URL}/api/v1/test-patch`);
   try {
     const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/test-patch`, {
       method: "PATCH",
@@ -38,11 +37,8 @@ export async function test_patch_api() {
         "Content-Type": "application/json",
       },
     });
-    const datos = await respuesta.json();
-    console.log(`[DEBUG] Respuesta test-patch:`, datos);
-    return datos;
+    return await respuesta.json();
   } catch (error) {
-    console.error(`[ERROR] Test PATCH falló:`, error);
     throw error;
   }
 }

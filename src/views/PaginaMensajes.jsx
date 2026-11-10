@@ -481,8 +481,6 @@ export default function PaginaMensajes() {
           receiverId: usuario_actual_chat.id,
         });
 
-        console.log(`[Chat] marcar_leidos completado: ${actualizados} actualizados`);
-
         // Forzar el estado a 0 después de la actualización exitosa
         if (activo && contacto_seleccionado?.id_contacto) {
           set_mensajes_no_leidos_por_contacto((prev) => ({
@@ -522,7 +520,6 @@ export default function PaginaMensajes() {
 
     try {
       const desuscribir = escucharMensajesChat({ chatId: chat_id }, (mensajes) => {
-        console.log(`[Chat ${chat_id}] Mensajes actualizados:`, mensajes.length);
         const mensajes_normalizados = mensajes.map((mensaje, indice) => ({
           id_mensaje: mensaje.id || `${chat_id}-${indice}`,
           es_del_usuario_actual: mensaje.senderId === firebase_usuario_actual.uid,
@@ -582,7 +579,6 @@ export default function PaginaMensajes() {
       setTimeout(async () => {
         try {
           const mensajes_frescos = await refrescarMensajesChat({ chatId: chat_id });
-          console.log("[Chat] Refetch manual:", mensajes_frescos.length, "mensajes");
           
           const mensajes_normalizados = mensajes_frescos.map((mensaje, indice) => ({
             id_mensaje: mensaje.id || `${chat_id}-${indice}`,

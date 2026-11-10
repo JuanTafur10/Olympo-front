@@ -170,7 +170,6 @@ export const marcarMensajesChatComoLeidos = async ({ chatId, receiverId }) => {
       chat_id: chatId,
       receiver_id: String(receiverId),
     });
-    console.log(`[Chat] Marcados ${respuesta.actualizados || 0} mensajes como leídos (backend)`);
     return respuesta.actualizados || 0;
   } catch (errorBackend) {
     console.warn("No se pudieron marcar los mensajes como leídos desde el backend:", errorBackend);

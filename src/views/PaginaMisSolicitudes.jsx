@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useContextoApp } from "../context/contexto_app";
 import { listar_proyectos_api } from "../services/proyectos_api";
-import { listar_solicitudes_por_proyecto_api, actualizar_estado_solicitud_api, test_patch_api } from "../services/solicitudes_api";
+import { listar_solicitudes_por_proyecto_api, actualizar_estado_solicitud_api } from "../services/solicitudes_api";
 import { API_BASE_URL } from "../services/api_config.js";
 import { apiFetch } from "../services/api_client.js";
 import {
@@ -138,7 +138,6 @@ export default function PaginaMisSolicitudes() {
   const manejar_actualizar_solicitud = async (solicitud_id, nuevo_estado) => {
     set_actualizando(solicitud_id);
     try {
-      await test_patch_api();
       await actualizar_estado_solicitud_api(solicitud_id, nuevo_estado);
 
       const nuevo = {};

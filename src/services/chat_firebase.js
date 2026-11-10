@@ -1,3 +1,7 @@
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
 const FIREBASE_CONFIG = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
@@ -16,18 +20,16 @@ const firebase_configurado = () => Boolean(
 );
 
 const obtenerFirebase = () => {
-  if (typeof window === "undefined" || !window.firebase) {
-    throw new Error("Firebase no está cargado en el navegador");
-  }
+  if (typeof window === "undefined") throw new Error("Firebase solo está disponible en el navegador");
 
-  const tiene_app_default = Array.isArray(window.firebase.apps)
-    && window.firebase.apps.some((app) => app?.name === "[DEFAULT]");
+  const tiene_app_default = firebase.apps.some((app) => app?.name === "[DEFAULT]");
 
   if (!tiene_app_default) {
-    window.firebase.initializeApp(FIREBASE_CONFIG);
+    if (!firebase_configurado()) throw new Error("Faltan las variables públicas de Firebase.");
+    firebase.initializeApp(FIREBASE_CONFIG);
   }
 
-  return window.firebase;
+  return firebase;
 };
 
 const obtenerAuth = () => obtenerFirebase().auth();

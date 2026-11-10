@@ -15,6 +15,7 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
+    "format": "prettier --check .",
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report"
   },

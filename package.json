@@ -27,7 +27,7 @@
     "typescript": "7.0.2"
   },
   "engines": {
-    "node": "22.x"
+    "node": "26.x"
   },
   "allowScripts": {
     "protobufjs@7.6.6": true

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { TrendingUp, PencilLine } from "lucide-react";
-import { API_BASE_URL } from "../services/api_config";
-import { apiFetch } from "../services/api_client";
+import { obtenerProyeccionProyecto } from "../services/analytics_api.js";
 import { listar_proyectos_api } from "../services/proyectos_api";
 import { useContextoApp } from "../context/contexto_app";
 import { useNavigate } from "../hooks/useNavigate";
@@ -21,7 +20,7 @@ import {
 import "./PaginaProyecciones.css";
 
 export default function PaginaProyecciones() {
-  const { datos_usuario } = useContextoApp();
+  const { datos_usuario, mostrar_notificacion } = useContextoApp();
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -53,10 +52,8 @@ export default function PaginaProyecciones() {
   const verProyeccion = async (proyectoId) => {
     setCargandoProyeccion(true);
     try {
-      const url = `${API_BASE_URL}/api/v1/analytics/proyeccion?proyecto_id=${encodeURIComponent(proyectoId)}&include_mensajes=true`;
-      const resp = await apiFetch(url);
-      const js = await resp.json().catch(() => ({}));
-      if (!resp.ok || !js.ok) {
+      const js = await obtenerProyeccionProyecto(proyectoId);
+      if (!js.ok) {
         setProyeccionData(null);
       } else {
         setProyeccionData(js.proyeccion);
@@ -64,6 +61,7 @@ export default function PaginaProyecciones() {
       }
     } catch (e) {
       console.error(e);
+      mostrar_notificacion?.("error", e.message || "No fue posible cargar la proyección.");
       setProyeccionData(null);
     } finally {
       setCargandoProyeccion(false);

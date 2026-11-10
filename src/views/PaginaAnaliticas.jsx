@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, PieChart, Pie, Cell, Legend } from "recharts";
 import { useContextoApp } from "../context/contexto_app";
-import { API_BASE_URL } from "../services/api_config";
-import { apiFetch } from "../services/api_client";
+import { obtenerAnaliticasProyectos } from "../services/analytics_api.js";
+import { useApiRequest } from "../hooks/useApiRequest.js";
 import "./PaginaAnaliticas.css";
 
 const COLORS_ESTADO = ["#1d86ee", "#34d399", "#f97316", "#94a3b8"];
@@ -11,6 +11,7 @@ const COLORS_TOP = ["#1d86ee", "#5b74e6", "#7c8ff5", "#ff8f56", "#f97316"];
 export default function PaginaAnaliticas() {
   const { datos_usuario, mostrar_notificacion } = useContextoApp();
   const [cargando, setCargando] = useState(true);
+  const { ejecutar } = useApiRequest();
   const [analiticas, setAnaliticas] = useState(null);
   const [error, setError] = useState("");
 
@@ -26,11 +27,7 @@ export default function PaginaAnaliticas() {
           return;
         }
 
-        const resp = await apiFetch(`${API_BASE_URL}/api/v1/analytics/proyectos?propietario_id=${propietario_id}`);
-        const body = await resp.json();
-        if (!body.ok) {
-          throw new Error(body.mensaje || "Error al obtener analíticas");
-        }
+        const body = await ejecutar(() => obtenerAnaliticasProyectos(propietario_id));
         setAnaliticas(body.analiticas || null);
       } catch (e) {
         console.error("Error cargando analíticas:", e);
@@ -42,7 +39,7 @@ export default function PaginaAnaliticas() {
     };
 
     cargar();
-  }, [datos_usuario?.id, mostrar_notificacion]);
+  }, [datos_usuario?.id, mostrar_notificacion, ejecutar]);
 
   if (cargando) {
     return (

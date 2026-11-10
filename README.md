@@ -17,7 +17,7 @@ Interfaz web de Olympo, una plataforma que conecta emprendedores con inversionis
 
 ## Variables de entorno
 
-- `NEXT_PUBLIC_API_URL`: URL pública de la API. Si queda vacía, Next.js reescribe `/api` hacia `BACKEND_URL`.
+- `NEXT_PUBLIC_API_HOST`: URL pública de la API, como pide la rúbrica. Si queda vacía, se admite `NEXT_PUBLIC_API_URL` por compatibilidad; si ambas están vacías, Next.js reescribe `/api` hacia `BACKEND_URL`.
 - `BACKEND_URL`: URL del backend para las reescrituras del servidor; por defecto `http://localhost:4000`.
 - `NEXT_PUBLIC_FIREBASE_*`: configuración pública de Firebase para las funciones que la utilizan.
 
@@ -44,4 +44,5 @@ Completar con los nombres y aportes reales del equipo antes de la entrega.
 | Pendiente de asignar | Pendiente |
 | Pendiente de asignar | Pendiente |
 | Pendiente de asignar | Pendiente |
+
 

@@ -39,6 +39,7 @@ export default function PaginaLogin() {
   };
 
   const _manejar_envio = async () => {
+    if (cargando) return;
     set_mensaje_estado("");
     set_mensaje_estado_tipo("error");
 
@@ -50,11 +51,17 @@ export default function PaginaLogin() {
       }
 
       set_cargando(true);
-      const resultado = await iniciar_sesion(email_input, contrasena_input, tipo_usuario_seleccionado);
-      set_cargando(false);
-      if (!resultado.exitoso) {
-        set_mensaje_estado(resultado.mensaje);
+      try {
+        const resultado = await iniciar_sesion(email_input, contrasena_input, tipo_usuario_seleccionado);
+        if (!resultado.exitoso) {
+          set_mensaje_estado(resultado.mensaje);
+          set_mensaje_estado_tipo("error");
+        }
+      } catch (error) {
+        set_mensaje_estado(error.message || "No fue posible iniciar sesión.");
         set_mensaje_estado_tipo("error");
+      } finally {
+        set_cargando(false);
       }
       return;
     }
@@ -72,15 +79,21 @@ export default function PaginaLogin() {
     }
 
     set_cargando(true);
-    const resultado = await registrar_usuario(
-      tipo_usuario_seleccionado,
-      nombre_usuario_input,
-      email_input,
-      contrasena_input,
-      confirmar_contrasena_input,
-      { descripcion: descripcion_input || undefined, acepta_terminos: acepta_input }
-    );
-    set_cargando(false);
+    let resultado;
+    try {
+      resultado = await registrar_usuario(
+        tipo_usuario_seleccionado,
+        nombre_usuario_input,
+        email_input,
+        contrasena_input,
+        confirmar_contrasena_input,
+        { descripcion: descripcion_input || undefined, acepta_terminos: acepta_input }
+      );
+    } catch (error) {
+      resultado = { exitoso: false, mensaje: error.message || "No fue posible crear la cuenta." };
+    } finally {
+      set_cargando(false);
+    }
 
     if (!resultado.exitoso) {
       set_mensaje_estado(resultado.mensaje);

@@ -452,6 +452,32 @@ export function ProveedorApp({ children }) {
     };
   }, [esta_autenticado, sesion_hidratada]);
 
+  const guardar_sesion_backend = (respuesta_auth, email, contrasena, tipo_usuario) => {
+    const usuario_backend = respuesta_auth.usuario;
+    if (!usuario_backend || !respuesta_auth.token) {
+      throw new Error("La API no devolvió un usuario y token válidos.");
+    }
+    const rol_backend = usuario_backend.role || usuario_backend.rol || tipo_usuario;
+    const datos_usuario_sesion = normalizar_usuario({
+      ...usuario_backend,
+      email,
+      tipo_usuario: rol_backend,
+      es_admin: Boolean(respuesta_auth.es_admin ?? String(rol_backend).toUpperCase() === "ADMIN"),
+    });
+
+    localStorage.setItem("olympo_token", respuesta_auth.token);
+    establecer_token_sesion(respuesta_auth.token);
+    set_datos_usuario(datos_usuario_sesion);
+    set_esta_autenticado(true);
+
+    localStorage.setItem("olympo_usuario", JSON.stringify(datos_usuario_sesion));
+    // Firebase es complementario; no debe dejar bloqueado el acceso a la app.
+    Promise.resolve()
+      .then(() => iniciarSesionFirebaseCliente(email, contrasena))
+      .catch(() => {});
+    return datos_usuario_sesion;
+  };
+
   // Inicia sesión contra el backend y actualiza el estado global.
   const iniciar_sesion = async (email, contrasena, tipo_usuario) => {
     try {
@@ -460,30 +486,7 @@ export function ProveedorApp({ children }) {
         password: contrasena,
         tipo_usuario,
       });
-
-      const usuario_backend = respuesta_login.usuario;
-      if (!usuario_backend || !respuesta_login.token) {
-        throw new Error("La API no devolvió un usuario y token válidos.");
-      }
-      const rol_backend = usuario_backend.role || usuario_backend.rol || tipo_usuario;
-      const datos_usuario_sesion = normalizar_usuario({
-        ...usuario_backend,
-        email,
-        tipo_usuario: rol_backend,
-        es_admin: Boolean(respuesta_login.es_admin ?? String(rol_backend).toUpperCase() === "ADMIN"),
-      });
-
-      localStorage.setItem("olympo_token", respuesta_login.token);
-      establecer_token_sesion(respuesta_login.token);
-      set_datos_usuario(datos_usuario_sesion);
-      set_esta_autenticado(true);
-
-      try {
-        await iniciarSesionFirebaseCliente(email, contrasena);
-      } catch (_) {
-        // Si falla Firebase Auth el backend sigue funcionando, pero Firestore no tendrá permisos.
-      }
-      localStorage.setItem("olympo_usuario", JSON.stringify(datos_usuario_sesion));
+      guardar_sesion_backend(respuesta_login, email, contrasena, tipo_usuario);
 
       return { exitoso: true, mensaje: respuesta_login.mensaje || "Sesión iniciada" };
     } catch (error) {
@@ -520,14 +523,7 @@ export function ProveedorApp({ children }) {
         };
       }
 
-      const respuesta_login = await iniciar_sesion(email, password, tipo_usuario);
-
-      if (!respuesta_login.exitoso) {
-        return {
-          exitoso: false,
-          mensaje: respuesta_login.mensaje || respuesta_registro.mensaje || "Usuario registrado, pero no se pudo iniciar sesión",
-        };
-      }
+      guardar_sesion_backend(respuesta_registro, email, password, tipo_usuario);
 
       return {
         exitoso: true,

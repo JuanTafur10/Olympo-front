@@ -1,5 +1,7 @@
 import { API_BASE_URL } from "./api_config.js";
 
+const API_TIMEOUT_MS = 45_000;
+
 function readSessionToken() {
   if (typeof window === "undefined") return null;
   try {
@@ -37,7 +39,26 @@ export async function apiFetch(input, init = {}) {
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(input, { ...init, headers });
+  const controller = new AbortController();
+  const inputSignal = init.signal || (input instanceof Request ? input.signal : undefined);
+  const propagarCancelacion = () => controller.abort(inputSignal?.reason);
+  if (inputSignal?.aborted) propagarCancelacion();
+  else inputSignal?.addEventListener("abort", propagarCancelacion, { once: true });
+
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  let response;
+  try {
+    response = await fetch(input, { ...init, headers, signal: controller.signal });
+  } catch (error) {
+    if (controller.signal.aborted && !inputSignal?.aborted) {
+      throw new Error("El servidor tardó demasiado en responder. Intenta de nuevo en unos momentos.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+    inputSignal?.removeEventListener("abort", propagarCancelacion);
+  }
+
   if (response.status === 401 && token && typeof window !== "undefined") {
     window.dispatchEvent(new Event("olympo:session-expired"));
   }

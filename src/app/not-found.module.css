@@ -1,0 +1,71 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  color: #f0f6fc;
+  background: radial-gradient(ellipse at top left, #14294b 0%, #0b0e14 55%);
+  font-family: var(--fuente-cuerpo, Arial, sans-serif);
+}
+
+.card {
+  width: min(100%, 580px);
+  padding: clamp(28px, 7vw, 56px);
+  text-align: center;
+  border: 1px solid #263b5e;
+  border-radius: 24px;
+  background: rgba(16, 28, 52, 0.94);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.36);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #ff773d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.card h1 {
+  margin: 0;
+  color: #f0f6fc;
+  font-size: clamp(28px, 6vw, 40px);
+  line-height: 1.15;
+}
+
+.description {
+  max-width: 420px;
+  margin: 16px auto 0;
+  color: #a3b2cc;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.link {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  padding: 0 24px;
+  border: 1px solid #2478ce;
+  border-radius: 999px;
+  background: linear-gradient(110deg, #1683ec, #ff713d);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.link:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.link:focus-visible {
+  outline: 3px solid #9db2ff;
+  outline-offset: 4px;
+}

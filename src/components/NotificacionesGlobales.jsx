@@ -8,7 +8,6 @@ export default function NotificacionesGlobales() {
   const navigate = useNavigate();
 
   const handleClickNotif = (notif) => {
-    console.debug('[Notificaciones] click notif', notif);
     // Si la notificación incluye meta con contactId, navegar al chat correspondiente
     const contactId = notif?.meta?.contactId || null;
     if (contactId) {

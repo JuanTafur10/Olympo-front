@@ -399,7 +399,6 @@ export default function PaginaSolicitudesInversionista() {
                   <button
                     className="solicitudes__boton solicitudes__boton--chat"
                     onClick={async () => {
-                      console.debug('[PaginaSolicitudesInversionista] click Chat - solicitud:', solicitud);
                       // Prioridad: emprendedor_contacto_id (calculado por backend) > firebase_uid > usuario_id
                       let contactId = solicitud.emprendedor_contacto_id || solicitud.emprendedor_firebase_uid || solicitud.emprendedor_usuario_id;
                       try {
@@ -410,10 +409,9 @@ export default function PaginaSolicitudesInversionista() {
                             const datosUsuario = await resUsuario.json().catch(() => ({}));
                             if (resUsuario.ok && datosUsuario?.ok && datosUsuario?.usuario?.firebase_uid) {
                               contactId = datosUsuario.usuario.firebase_uid;
-                              console.debug('[PaginaSolicitudesInversionista] firebase_uid resuelto desde usuario:', contactId);
                             }
-                          } catch (e) {
-                            console.debug('[PaginaSolicitudesInversionista] No se pudo resolver firebase_uid del usuario:', e);
+                          } catch {
+                            // Se conserva el ID disponible como alternativa.
                           }
                         }
 
@@ -421,7 +419,6 @@ export default function PaginaSolicitudesInversionista() {
                           // Último recurso: obtener propietario del proyecto desde la API de proyectos
                           const res = await obtenerProyectoLegado(solicitud.proyecto_id);
                           const pj = await res.json().catch(() => ({}));
-                          console.debug('[PaginaSolicitudesInversionista] proyecto fetch result:', { status: res.status, ok: res.ok, body: pj });
                           if (res.ok && pj && pj.ok && pj.proyecto) {
                             const propietarioId = pj.proyecto.propietario_id || pj.proyecto.propietarioId || null;
                             if (propietarioId) {
@@ -437,12 +434,10 @@ export default function PaginaSolicitudesInversionista() {
                               } catch (e) {
                                 contactId = propietarioId;
                               }
-                              console.debug('[PaginaSolicitudesInversionista] propietarioId encontrado:', contactId);
                             }
                           }
                         }
 
-                        console.debug('[PaginaSolicitudesInversionista] contactId final:', contactId);
                         if (contactId) {
                           // Preparar datos temporales para el panel de mensajes
                           try {

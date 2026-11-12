@@ -147,9 +147,7 @@ export function ProveedorApp({ children }) {
       if (!datos_usuario.id) return;
       set_mensajes_bot([]); // Limpiar antes de cargar para evitar ver mensajes previos
       try {
-        console.debug(`[Chatbot] Cargando historial para usuario ID: ${datos_usuario.id}`);
         const historial = await obtener_historial_chatbot(datos_usuario.id, 200);
-        console.debug("Historial chatbot obtenido:", historial);
         if (!activo || !historial) {
           if (activo) set_historial_cargado(true);
           return;
@@ -196,7 +194,6 @@ export function ProveedorApp({ children }) {
           }
         });
 
-        console.debug("Mensajes formateados chatbot:", mensajesFormateados);
         // Actualizar aunque esté vacío (para limpiar estado previo)
         if (activo) {
           set_mensajes_bot(mensajesFormateados);

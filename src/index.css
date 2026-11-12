@@ -4,3 +4,16 @@
 
 body { margin: 0; }
 
+/* El landing y las vistas públicas del marketplace ocupan el alto del contenido. */
+html:has(.landing),
+html:has(.project-list),
+html:has(.project-detail),
+body:has(.landing),
+body:has(.project-list),
+body:has(.project-detail) {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+

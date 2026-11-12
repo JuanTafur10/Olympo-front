@@ -32,8 +32,12 @@ No incluyas secretos privados en variables `NEXT_PUBLIC_*` ni subas archivos `.e
 
 ## Despliegues
 
-- Frontend: pendiente de registrar el enlace de producción.
-- Backend: ver el README del repositorio Olympo-back.
+- Repositorio frontend: [github.com/JuanTafur10/Olympo-front](https://github.com/JuanTafur10/Olympo-front).
+- Sitio frontend: [olympo-front-git-main-juan-tafur.vercel.app](https://olympo-front-git-main-juan-tafur.vercel.app).
+- Repositorio backend: [github.com/JuanTafur10/Olympo-back](https://github.com/JuanTafur10/Olympo-back).
+- API y estado: [olympo-backend.onrender.com/api/v1/health](https://olympo-backend.onrender.com/api/v1/health).
+
+> El despliegue de Vercel debe permitir acceso público para la sustentación; revisa la protección de despliegues antes de compartir el enlace.
 
 ## Reparto del trabajo
 

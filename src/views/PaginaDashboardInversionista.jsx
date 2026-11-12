@@ -149,7 +149,6 @@ export default function PaginaDashboardInversionista() {
   };
 
   const irAlChat = async (solicitud) => {
-    console.debug('[PaginaDashboardInversionista] click Chat - solicitud:', solicitud);
     // Prioridad: emprendedor_contacto_id (calculado por backend) > firebase_uid > usuario_id
     let contactId = solicitud.emprendedor_contacto_id || solicitud.emprendedor_firebase_uid || solicitud.emprendedor_usuario_id;
     try {
@@ -160,10 +159,9 @@ export default function PaginaDashboardInversionista() {
           const datosUsuario = await resUsuario.json().catch(() => ({}));
           if (resUsuario.ok && datosUsuario?.ok && datosUsuario?.usuario?.firebase_uid) {
             contactId = datosUsuario.usuario.firebase_uid;
-            console.debug('[PaginaDashboardInversionista] firebase_uid resuelto desde usuario:', contactId);
           }
-        } catch (e) {
-          console.debug('[PaginaDashboardInversionista] No se pudo resolver firebase_uid del usuario:', e);
+        } catch {
+          // Se conserva el ID disponible como alternativa.
         }
       }
 
@@ -171,7 +169,6 @@ export default function PaginaDashboardInversionista() {
         // Último recurso: obtener propietario del proyecto desde la API de proyectos
         const res = await obtenerProyectoLegado(solicitud.proyecto_id);
         const pj = await res.json().catch(() => ({}));
-        console.debug('[PaginaDashboardInversionista] proyecto fetch result:', { status: res.status, ok: res.ok, body: pj });
         if (res.ok && pj && pj.ok && pj.proyecto) {
           const propietarioId = pj.proyecto.propietario_id || pj.proyecto.propietarioId || null;
           if (propietarioId) {
@@ -187,12 +184,10 @@ export default function PaginaDashboardInversionista() {
             } catch (e) {
               contactId = propietarioId;
             }
-            console.debug('[PaginaDashboardInversionista] propietarioId encontrado:', contactId);
           }
         }
       }
 
-      console.debug('[PaginaDashboardInversionista] contactId final:', contactId);
       if (contactId) {
         // Preparar datos temporales para el panel de mensajes
         try {

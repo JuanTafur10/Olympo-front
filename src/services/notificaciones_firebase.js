@@ -8,11 +8,8 @@ const normalizarFecha = (valor) => {
 };
 
 const pedirNotificaciones = async (userId) => {
-  console.debug("[Notificaciones API] Solicitando notificaciones para usuario:", userId);
   const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/notificaciones?usuario_id=${encodeURIComponent(userId)}`);
   const datos = await respuesta.json().catch(() => ({}));
-
-  console.debug("[Notificaciones API] Status:", respuesta.status, "Datos:", datos);
 
   if (!respuesta.ok || !datos.ok) {
     console.error("[Notificaciones API] Error:", datos.mensaje);
@@ -20,7 +17,6 @@ const pedirNotificaciones = async (userId) => {
   }
 
   const notificaciones = (datos.notificaciones || []).sort((a, b) => normalizarFecha(b.creada_en) - normalizarFecha(a.creada_en));
-  console.debug("[Notificaciones API] Total de notificaciones:", notificaciones.length);
   return notificaciones;
 };
 

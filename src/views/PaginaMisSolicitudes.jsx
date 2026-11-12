@@ -165,8 +165,8 @@ export default function PaginaMisSolicitudes() {
           if (resUsuario.ok && datosUsuario?.ok && datosUsuario?.usuario?.firebase_uid) {
             contactId = datosUsuario.usuario.firebase_uid;
           }
-        } catch (e) {
-          console.debug("[PaginaMisSolicitudes] No se pudo resolver firebase_uid del usuario:", e);
+        } catch {
+          // El chat aún puede abrirse con el identificador del usuario.
         }
       }
 

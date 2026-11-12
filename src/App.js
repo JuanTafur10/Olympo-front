@@ -18,7 +18,6 @@ import PaginaCallCenter from "./views/PaginaCallCenter";
 import PaginaAdministracion from "./views/PaginaAdministracion";
 import PaginaSoporteAdmin from "./views/PaginaSoporteAdmin";
 import PaginaDashboard from "./views/PaginaDashboard";
-import PaginaProyectos from "./views/PaginaProyectos";
 import PaginaMisSolicitudes from "./views/PaginaMisSolicitudes";
 import PaginaAnaliticas from "./views/PaginaAnaliticas";
 import PaginaProyecciones from "./views/PaginaProyecciones";
@@ -26,9 +25,13 @@ import PaginaRiesgos from "./views/PaginaRiesgos";
 import PaginaDashboardInversionista from "./views/PaginaDashboardInversionista";
 import PaginaProyectosInversionista from "./views/PaginaProyectosInversionista";
 import PaginaSolicitudesInversionista from "./views/PaginaSolicitudesInversionista";
+import LandingPage from "./components/marketplace/LandingPage";
+import ProjectListPage from "./components/marketplace/ProjectListPage";
+import ProjectDetailPage from "./components/marketplace/ProjectDetailPage";
+import MarketplaceHeader from "./components/marketplace/MarketplaceHeader";
 
 const rutas_privadas = new Set([
-  "/dashboard", "/admin", "/admin-tickets", "/proyectos", "/solicitudes",
+  "/dashboard", "/admin", "/admin-tickets", "/solicitudes",
   "/mensajes", "/explorar-usuarios", "/chatbot", "/notificaciones", "/cuenta",
   "/perfil-contacto", "/configuracion", "/callcenter", "/proyecciones",
   "/analiticas", "/riesgos",
@@ -46,6 +49,7 @@ export default function App() {
   const es_admin = esRolAdmin(datos_usuario);
   const rol_usuario = String(datos_usuario?.tipo_usuario || "").toLowerCase();
   const es_inversionista = rol_usuario.includes("inversionista");
+  const detalle_proyecto_id = pathname.match(/^\/proyectos\/([^/]+)$/)?.[1] || null;
 
   useEffect(() => {
     const manejar_sesion_expirada = () => router.replace("/login");
@@ -69,7 +73,9 @@ export default function App() {
       router.replace(es_admin ? "/admin" : "/dashboard");
       return;
     }
-    if (!rutas_privadas.has(pathname) && !["/", "/login", "/register"].includes(pathname)) {
+    if (!rutas_privadas.has(pathname)
+      && !["/", "/login", "/register", "/proyectos"].includes(pathname)
+      && !detalle_proyecto_id) {
       router.replace(esta_autenticado ? "/dashboard" : "/login");
       return;
     }
@@ -86,7 +92,7 @@ export default function App() {
       router.replace("/dashboard");
       return;
     }
-  }, [esta_autenticado, es_admin, es_inversionista, pathname, router, sesion_cargando]);
+  }, [esta_autenticado, es_admin, es_inversionista, pathname, router, sesion_cargando, detalle_proyecto_id]);
 
   if (sesion_cargando) {
     return <div className="app-verificando-sesion" role="status">Verificando tu sesión…</div>;
@@ -99,7 +105,20 @@ export default function App() {
 
   if (pathname === "/") {
     if (esta_autenticado) return null;
-    return <><TraductorGlobal /><PaginaLogin /></>;
+    return <LandingPage />;
+  }
+
+  if (pathname === "/proyectos" || detalle_proyecto_id) {
+    const contenido = detalle_proyecto_id
+      ? <ProjectDetailPage projectId={decodeURIComponent(detalle_proyecto_id)} />
+      : esta_autenticado && es_inversionista
+        ? <PaginaProyectosInversionista />
+        : <ProjectListPage />;
+
+    if (esta_autenticado) {
+      return <><TraductorGlobal /><NotificacionesGlobales /><LayoutPrincipal>{contenido}</LayoutPrincipal></>;
+    }
+    return <><MarketplaceHeader /><TraductorGlobal />{contenido}</>;
   }
 
   if (!rutas_privadas.has(pathname)) return null;
@@ -112,7 +131,6 @@ export default function App() {
     case "/admin": pagina = <PaginaAdministracion />; break;
     case "/admin-tickets": pagina = <PaginaSoporteAdmin />; break;
     case "/dashboard": pagina = es_admin ? <PaginaAdministracion /> : (es_inversionista ? <PaginaDashboardInversionista /> : <PaginaDashboard />); break;
-    case "/proyectos": pagina = es_inversionista ? <PaginaProyectosInversionista /> : <PaginaProyectos />; break;
     case "/solicitudes": pagina = es_inversionista ? <PaginaSolicitudesInversionista /> : <PaginaMisSolicitudes />; break;
     case "/mensajes": pagina = <PaginaMensajes />; break;
     case "/explorar-usuarios": pagina = <PaginaExplorarUsuarios />; break;

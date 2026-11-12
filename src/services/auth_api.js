@@ -33,38 +33,28 @@ async function leer_respuesta_backend(respuesta, mensaje_predeterminado) {
 }
 
 export async function obtener_usuario_por_id_api(usuario_id) {
-  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/users/${encodeURIComponent(usuario_id)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  const datos = await respuesta.json().catch(() => ({}));
-
-  if (!respuesta.ok || !datos.ok) {
-    throw new Error(datos.mensaje || "No fue posible obtener el usuario");
-  }
-
-  return datos.usuario;
+  return leer_respuesta_backend(respuesta, "No fue posible obtener el usuario");
 }
 
 export async function actualizar_usuario_api(usuario_id, datos_perfil) {
-  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios/${usuario_id}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/users/${encodeURIComponent(usuario_id)}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(datos_perfil),
+    body: JSON.stringify({
+      name: datos_perfil.name || datos_perfil.nombre || datos_perfil.nombre_usuario,
+      email: datos_perfil.email || datos_perfil.email_usuario,
+    }),
   });
-
-  const datos = await respuesta.json().catch(() => ({}));
-
-  if (!respuesta.ok || !datos.ok) {
-    throw new Error(datos.mensaje || "No fue posible actualizar el perfil");
-  }
-
-  return datos.usuario;
+  return leer_respuesta_backend(respuesta, "No fue posible actualizar el perfil");
 }
 
 export async function actualizar_foto_perfil_api(usuario_id, archivo) {
@@ -86,21 +76,18 @@ export async function actualizar_foto_perfil_api(usuario_id, archivo) {
 }
 
 export async function listar_usuarios_api(usuario_id_excluir) {
-  const query = usuario_id_excluir ? `?excluir_usuario_id=${encodeURIComponent(usuario_id_excluir)}` : "";
-  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/usuarios${query}`, {
+  const respuesta = await apiFetch(`${API_BASE_URL}/api/v1/users?page=1&limit=100`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  const datos = await respuesta.json().catch(() => ({}));
-
-  if (!respuesta.ok || !datos.ok) {
-    throw new Error(datos.mensaje || "No fue posible obtener los usuarios");
-  }
-
-  return (datos.usuarios || []).filter((usuario) => String(usuario?.rol || "").toLowerCase() !== "admin");
+  const datos = await leer_respuesta_backend(respuesta, "No fue posible obtener los usuarios");
+  return (datos.data || datos || []).filter((usuario) =>
+    String(usuario?.id) !== String(usuario_id_excluir)
+      && String(usuario?.role || "").toUpperCase() !== "ADMIN",
+  );
 }
 
 export async function registrar_usuario_api(datos_registro) {
